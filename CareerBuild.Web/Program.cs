@@ -1,36 +1,45 @@
+using Persistence;
 
 namespace CareerBuild.Web
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+			#region DI Services Container
+			// Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+			builder.Services.AddControllers();
+			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+			builder.Services.AddEndpointsApiExplorer();
+			builder.Services.AddSwaggerGen();
+			builder.Services.AddIdentityServices(builder.Configuration);
+			#endregion
 
-            var app = builder.Build();
+			var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+			#region Middlewares
+			if (app.Environment.IsDevelopment())
+			{
+				app.UseSwagger();
+				app.UseSwaggerUI();
+			}
+			app.UseHttpsRedirection();
 
-            app.UseHttpsRedirection();
+			app.UseStaticFiles();
 
-            app.UseAuthorization();
+			app.UseRouting();
+			app.UseAuthentication();
+			app.UseAuthorization();
 
+			// Configure the HTTP request pipeline.
+			app.MapControllers();
 
-            app.MapControllers();
+			#endregion
 
-            app.Run();
-        }
-    }
+			app.Run();
+		}
+	}
 }

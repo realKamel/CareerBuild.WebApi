@@ -1,0 +1,33 @@
+﻿using Domain.Entities.IdentityModule;
+using Microsoft.Extensions.DependencyInjection;
+using Persistence.DbContexts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
+
+namespace Persistence
+{
+	public static class PersistenceServiceRegistration
+	{
+		public static IServiceCollection AddIdentityServices(this IServiceCollection services,
+			IConfiguration _config)
+		{
+
+			services.AddDbContext<IdentityContext>(options =>
+			{
+				options.UseSqlServer(_config.GetConnectionString("IdentityConnection"));
+			});
+
+			services.AddIdentityCore<AppUserBase>()
+				.AddRoles<IdentityRole>()
+				.AddEntityFrameworkStores<IdentityContext>();
+
+			return services;
+		}
+	}
+}
