@@ -1,0 +1,26 @@
+﻿using Domain.Interfaces;
+
+namespace CareerBuild.Web.Extensions
+{
+	public static class WebAppExtensions
+	{
+		public static async Task DataSeedingAsync(this WebApplication app)
+		{
+			using var scope = app.Services.CreateScope();
+			var DataSeedingObj = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
+			await DataSeedingObj.IdentityDataSeedingAsync();
+		}
+
+		public static IApplicationBuilder UseSwaggerMiddleware(this WebApplication app)
+		{
+			if (app.Environment.IsDevelopment())
+			{
+				app.UseSwagger();
+				app.UseSwaggerUI();
+			}
+
+			return app;
+		}
+	}
+
+}

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
+using Domain.Interfaces;
 
 namespace Persistence
 {
@@ -23,9 +24,13 @@ namespace Persistence
 				options.UseSqlServer(_config.GetConnectionString("IdentityConnection"));
 			});
 
-			services.AddIdentityCore<AppUserBase>()
-				.AddRoles<IdentityRole>()
-				.AddEntityFrameworkStores<IdentityContext>();
+			services.AddIdentityCore<AppUserBase>(options =>
+			{
+				options.User.RequireUniqueEmail = true;
+
+			}).AddRoles<IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
+
+			services.AddScoped<IDataSeeding, DataSeeding>();
 
 			return services;
 		}

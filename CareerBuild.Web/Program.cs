@@ -1,41 +1,52 @@
+using CareerBuild.Web.Extensions;
 using Persistence;
 
 namespace CareerBuild.Web
 {
 	public class Program
 	{
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
 			#region DI Services Container
 			// Add services to the container.
 
-			builder.Services.AddControllers();
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen();
+			builder.Services.AddControllers(); // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+			builder.Services.AddSwaggerServices();
+
 			builder.Services.AddIdentityServices(builder.Configuration);
+
 			#endregion
 
 			var app = builder.Build();
 
-			#region Middlewares
-			if (app.Environment.IsDevelopment())
+			try
 			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
+				await app.DataSeedingAsync();
 			}
-			app.UseHttpsRedirection();
+			catch (Exception e)
+			{
+				throw new Exception(e.Message);
+			}
 
-			app.UseStaticFiles();
-
-			app.UseRouting();
-			app.UseAuthentication();
-			app.UseAuthorization();
-
+			#region Middlewares
 			// Configure the HTTP request pipeline.
-			app.MapControllers();
+			
+			app.UseSwaggerMiddleware();//to enable swagger in development
+
+			app.UseHttpsRedirection(); // to enable https
+
+			app.UseStaticFiles(); //if we static file we can now use it
+
+			app.UseRouting(); // enabled explicitly
+
+			app.UseAuthentication(); // if we have login
+
+			app.UseAuthorization(); // if we have role 
+
+			app.MapControllers(); // maps api controllers
 
 			#endregion
 
