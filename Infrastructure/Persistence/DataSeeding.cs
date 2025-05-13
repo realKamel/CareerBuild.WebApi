@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Persistence
 {
 	public class DataSeeding(IdentityContext _identityDb,
-		UserManager<AppUserBase> _userManager,
+		UserManager<AppUser> _userManager,
 		RoleManager<IdentityRole> _roleManager) : IDataSeeding
 	{
 		public async Task IdentityDataSeedingAsync()
@@ -32,14 +32,9 @@ namespace Persistence
 				{
 					var user = new AppUser()
 					{
-						FirstName = "Abdelrahman",
-						LastName = "Ali",
 						Email = "Abdelrahman@gmail.com",
 						PhoneNumber = "01014202765",
 						Address = new Address() { Street = "123", City = "Giza", Country = "Egypt" },
-						UserGoal = "",
-						EducationLevel = EducationLevel.BACHELORS_DEGREE,
-						UserType = UserType.User,
 						UserName = "abdelrahman"
 					};
 

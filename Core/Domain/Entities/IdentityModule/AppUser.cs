@@ -2,23 +2,28 @@
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Domain.Entities.IdentityModule
 {
-	public class AppUser : AppUserBase
+	public class AppUser : IdentityUser
 	{
-		/*
-		 * uq_user_email constraint
-		 */
+		#region Common Properties
+		// Add common properties to Regular and Company users
+		public Address Address { get; set; } = default!;
+		public string? PictureUrl { get; set; } = default!;
+		#endregion
 
-		public string FirstName { get; set; } = default!;
-		public string LastName { get; set; } = default!;
-		public string? PreferredJobTitle { get; set; } = default!;
-		public string? ResumeUrl { get; set; } = default!;
-		public string UserGoal { get; set; } = default!;
-		public EducationLevel EducationLevel { get; set; }
+		#region Extentions Profiles
+		// one-to-one relationships
+		[InverseProperty(nameof(RegularUserProfile.AppUser))]
+		public RegularUserProfile RegularProfile { get; set; } = default!;
+
+		[InverseProperty(nameof(CompanyUserProfile.AppUser))]
+		public CompanyUserProfile CompanyProfile { get; set; } = default!;
+		#endregion
 	}
 }

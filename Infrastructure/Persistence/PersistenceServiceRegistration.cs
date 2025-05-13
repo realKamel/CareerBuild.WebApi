@@ -24,11 +24,13 @@ namespace Persistence
 				options.UseSqlServer(_config.GetConnectionString("IdentityConnection"));
 			});
 
-			services.AddIdentityCore<AppUserBase>(options =>
+			services.AddIdentityCore<AppUser>(options =>
 			{
 				options.User.RequireUniqueEmail = true;
 
-			}).AddRoles<IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
+			})
+			.AddRoles<IdentityRole>()
+			.AddEntityFrameworkStores<IdentityContext>();
 
 			services.AddScoped<IDataSeeding, DataSeeding>();
 
