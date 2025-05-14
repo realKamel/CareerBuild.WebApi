@@ -14,7 +14,7 @@ namespace Presentation.Controllers
 	public class AuthenticationController(IServiceManager _serviceManager) : ControllerBase
 	{
 		[HttpPost("RegularUser")]
-		public async Task<ActionResult<LoggedInUser>> RegularUserLogin(LoginDto login)
+		public async Task<ActionResult<LoggedInUserDto>> RegularUserLogin(LoginDto login)
 		{
 			var result = await _serviceManager
 				.AuthenticationServices.LoginRegularUserAsync(login);
@@ -22,21 +22,21 @@ namespace Presentation.Controllers
 		}
 
 		[HttpPost("CompanyUser")]
-		public async Task<ActionResult<LoggedInCompany>> CompanyLogin(LoginDto login)
+		public async Task<ActionResult<LoggedInCompanyDto>> CompanyLogin(LoginDto login)
 		{
 			var result = await _serviceManager
 				.AuthenticationServices.LoginCompanyAsync(login);
 			return Ok(result);
 		}
 
-		[HttpPost("SignUpRegularUser")]
+		[HttpPost("RegisterRegularUser")]
 		public async Task<ActionResult<bool>> RegisterRegularUserAsync(RegisterUserDto userDto)
 		{
 			var result = await _serviceManager.AuthenticationServices.RegisterRegularUserAsync(userDto);
 			return Ok(result);
 		}
 
-		[HttpPost("SignUpCompanyUser")]
+		[HttpPost("RegisterCompany")]
 		public async Task<ActionResult<bool>> RegisterCompanyUserAsync(RegisterCompanyDto userDto)
 		{
 			var result = await _serviceManager.AuthenticationServices

@@ -16,7 +16,7 @@ namespace Domain.Entities.Common
 		// Postgraduate degree after a Bachelor's, often 1-2 years
 		DOCTORAL_DEGREE, 
 		// The highest academic degree (e.g., Ph.D., Ed.D.)
-		OTHER_TERTIARY_QUALIFICATION 
+		OTHER_QUALIFICATION 
 		// For other significant tertiary qualifications that don't fit neatly into the above
 	}
 }

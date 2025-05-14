@@ -3,6 +3,7 @@ using Shared.Dtos.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,10 +12,14 @@ namespace AbstractServices
 	public interface IAuthenticationServices
 	{
 		//Login user
-		public Task<LoggedInUser> LoginRegularUserAsync(LoginDto loginDto);
+		public Task<LoggedInUserDto> LoginRegularUserAsync(LoginDto loginDto);
 
 		//Login company
-		public Task<LoggedInCompany> LoginCompanyAsync(LoginDto loginDto);
+		public Task<LoggedInCompanyDto> LoginCompanyAsync(LoginDto loginDto);
+
+
+		//public Task<TEntity> LoginAsync<TBase, TEntity>(LoginDto loginDto,
+		//	Expression<Func<TBase, object>> expression) where TBase : class ;
 
 		//register normal User
 		public Task<bool> RegisterRegularUserAsync(RegisterUserDto userDto);
