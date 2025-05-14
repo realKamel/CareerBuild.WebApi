@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using CareerBuild.Web.CustomMiddleWares;
+using Domain.Interfaces;
 
 namespace CareerBuild.Web.Extensions
 {
@@ -18,6 +19,14 @@ namespace CareerBuild.Web.Extensions
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
+
+			return app;
+		}
+
+		public static IApplicationBuilder UseCustomExceptionMiddleware(this IApplicationBuilder app)
+		{
+			//to make request first go through this middleware
+			app.UseMiddleware<CustomExceptionHandlerMiddleWare>();
 
 			return app;
 		}

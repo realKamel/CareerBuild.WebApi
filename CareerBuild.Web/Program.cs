@@ -43,6 +43,8 @@ namespace CareerBuild.Web
 			#region Middlewares
 			// Configure the HTTP request pipeline.
 
+			app.UseCustomExceptionMiddleware(); // to enable exceptions
+
 			app.UseSwaggerMiddleware();//to enable swagger in development
 
 			app.UseHttpsRedirection(); // to enable https
