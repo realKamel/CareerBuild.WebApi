@@ -2,6 +2,7 @@
 using AutoMapper;
 using Domain.Entities.Common;
 using Domain.Entities.IdentityModule;
+using Domain.Exceptions;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -27,8 +28,7 @@ namespace Services
 		{
 			if (user == null)
 			{
-				//TODO
-				//throw new UserNotFoundException(login.Email);
+				throw new UserNotFoundException(loginDto.Email);
 			}
 
 			var validPassword = await _userManager
@@ -36,11 +36,8 @@ namespace Services
 
 			if (!validPassword)
 			{
-				//TODO
-				//throw new WrongLoginException();
+				throw new WrongLoginException();
 			}
-
-			//TODO
 
 			var result = _mapper.Map<TEntity>(user);
 
@@ -59,7 +56,7 @@ namespace Services
 			if (!result.Succeeded)
 			{
 				var errors = result.Errors.Select(e => e.Description).ToList();
-				throw new Exception("Register fails"); // BadRequestException(errors);
+				throw new BadRequestException(errors);
 			}
 			if (user == null)
 			{
@@ -89,14 +86,21 @@ namespace Services
 
 		public async Task<bool> RegisterCompanyUserAsync(RegisterCompanyDto companyDto)
 		{
-
+			// it's not possible to have null user as the function will throw exception
 			var user = await RegisterHelper<RegisterCompanyDto>(companyDto);
 
 			var companyProfile = _mapper.Map<CompanyUserProfile>(companyDto);
 
-			companyProfile.AppUserId = user.Id;
+			companyProfile.AppUserId = user.Id; // nav property
 
-			await _unitOfWork.CompanyUserRepository.AddAsync(companyProfile);
+			try
+			{
+				await _unitOfWork.CompanyUserRepository.AddAsync(companyProfile);
+			}
+			catch (Exception e)
+			{
+				throw new Exception(e.Message);
+			}
 
 			return await _unitOfWork.SaveChangesAsync() > 0;
 		}
@@ -109,7 +113,15 @@ namespace Services
 
 			regularUser.AppUserId = user.Id;
 
-			await _unitOfWork.RegularUserRepository.AddAsync(regularUser);
+			try
+			{
+
+				await _unitOfWork.RegularUserRepository.AddAsync(regularUser);
+			}
+			catch (Exception e)
+			{
+				throw new Exception(e.Message);
+			}
 
 			return await _unitOfWork.SaveChangesAsync() > 0;
 		}
