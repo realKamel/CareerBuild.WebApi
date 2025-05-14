@@ -10,8 +10,8 @@ namespace Domain.Interfaces
 	public interface IUnitOfWork
 	{
 		//IGenericRepository<TEntity, TKey> GetRepository<TEntity, TKey>() where TEntity : BaseEntity<TKey>;
-		public IIdentityRepository<CompanyUserProfile> CompanyUserRepository { get; set; }
-		public IIdentityRepository<RegularUserProfile> RegularUserRepository { get; set; }
+		public IIdentityRepository<CompanyUserProfile> CompanyUserRepository { get; }
+		public IIdentityRepository<RegularUserProfile> RegularUserRepository { get; }
 		Task<int> SaveChangesAsync();
 	}
 }

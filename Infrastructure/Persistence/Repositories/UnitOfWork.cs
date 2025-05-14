@@ -11,12 +11,25 @@ using System.Threading.Tasks;
 
 namespace Persistence.Repositories
 {
-	public class UnitOfWork(IdentityContext _identityDb) : IUnitOfWork
+	public class UnitOfWork : IUnitOfWork
 	{
-		public IIdentityRepository<CompanyUserProfile> CompanyUserRepository
-		{ get; set; }
-		public IIdentityRepository<RegularUserProfile> RegularUserRepository
-		{ get; set; }
+
+		private readonly IdentityContext _identityDb;
+		private readonly Lazy<IIdentityRepository<CompanyUserProfile>> _companyUserRepository;
+		private readonly Lazy<IIdentityRepository<RegularUserProfile>> _regularUserRepository;
+
+		public UnitOfWork(IdentityContext identityDb)
+		{
+			this._identityDb = identityDb;
+			_companyUserRepository = new Lazy<IIdentityRepository<CompanyUserProfile>>(() => new IdentityRepository<CompanyUserProfile>(_identityDb));
+			_regularUserRepository = new Lazy<IIdentityRepository<RegularUserProfile>>(() => new IdentityRepository<RegularUserProfile>(_identityDb));
+		}
+
+		public IIdentityRepository<CompanyUserProfile>
+			CompanyUserRepository => _companyUserRepository.Value;
+
+		public IIdentityRepository<RegularUserProfile>
+			RegularUserRepository => _regularUserRepository.Value;
 
 		public async Task<int> SaveChangesAsync()
 		{

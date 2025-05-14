@@ -9,10 +9,10 @@ namespace Shared.Dtos.Identity
 {
 	public class RegisterUserDto
 	{
-		[Range(1,255)]
+		//[Range(1,255)]
 		public string FirstName { get; set; } = default!;
 
-		[Range(1, 255)]
+		//[Range(1, 255)]
 		public string LastName { get; set; } = default!;
 
 		[MaxLength(255)]

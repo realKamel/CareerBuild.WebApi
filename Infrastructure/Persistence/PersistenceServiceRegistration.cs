@@ -37,7 +37,6 @@ namespace Persistence
 
 			Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-
 			return Services;
 		}
 	}

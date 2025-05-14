@@ -17,7 +17,6 @@ namespace Persistence.Repositories
 		public async Task AddAsync(TEntity entity)
 		{
 			await _dbContext.Set<TEntity>().AddAsync(entity);
-			await _dbContext.SaveChangesAsync();
 		}
 
 		public async Task<IEnumerable<TEntity>> GetAllAsync()
@@ -34,13 +33,11 @@ namespace Persistence.Repositories
 		public void Remove(TEntity entity)
 		{
 			_dbContext.Set<TEntity>().Remove(entity);
-			_dbContext.SaveChanges();
 		}
 
 		public void Update(TEntity entity)
 		{
 			_dbContext.Set<TEntity>().Update(entity);
-			_dbContext.SaveChanges();
 		}
 	}
 }
