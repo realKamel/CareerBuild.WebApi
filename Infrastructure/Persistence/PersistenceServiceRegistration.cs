@@ -10,21 +10,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Domain.Interfaces;
+using Persistence.Repositories;
 
 namespace Persistence
 {
 	public static class PersistenceServiceRegistration
 	{
-		public static IServiceCollection AddIdentityServices(this IServiceCollection services,
-			IConfiguration _config)
+		public static IServiceCollection AddIdentityServices(this IServiceCollection Services,
+			IConfiguration Configuration)
 		{
 
-			services.AddDbContext<IdentityContext>(options =>
+			Services.AddDbContext<IdentityContext>(options =>
 			{
-				options.UseSqlServer(_config.GetConnectionString("IdentityConnection"));
+				options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection"));
 			});
 
-			services.AddIdentityCore<AppUser>(options =>
+			Services.AddIdentityCore<AppUser>(options =>
 			{
 				options.User.RequireUniqueEmail = true;
 
@@ -32,9 +33,12 @@ namespace Persistence
 			.AddRoles<IdentityRole>()
 			.AddEntityFrameworkStores<IdentityContext>();
 
-			services.AddScoped<IDataSeeding, DataSeeding>();
+			Services.AddScoped<IDataSeeding, DataSeeding>();
 
-			return services;
+			Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+			return Services;
 		}
 	}
 }
