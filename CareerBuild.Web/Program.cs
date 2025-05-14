@@ -1,6 +1,12 @@
 using CareerBuild.Web.Extensions;
+using Domain.Entities.IdentityModule;
+using Domain.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
-
+using Persistence.DbContexts;
+using Persistence.Repositories;
+using Services;
 namespace CareerBuild.Web
 {
 	public class Program
@@ -14,9 +20,12 @@ namespace CareerBuild.Web
 
 			builder.Services.AddControllers(); // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-			builder.Services.AddSwaggerServices();
+			builder.Services.AddSwaggerServices(); // web
 
-			builder.Services.AddIdentityServices(builder.Configuration);
+			builder.Services.AddIdentityServices(builder.Configuration); //persistence layer
+
+			builder.Services.AddAppCoreService(); //service layer
+
 
 			#endregion
 
@@ -33,7 +42,7 @@ namespace CareerBuild.Web
 
 			#region Middlewares
 			// Configure the HTTP request pipeline.
-			
+
 			app.UseSwaggerMiddleware();//to enable swagger in development
 
 			app.UseHttpsRedirection(); // to enable https
