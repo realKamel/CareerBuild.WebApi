@@ -37,6 +37,14 @@ namespace Persistence
 
 			Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+
+
+			Services.AddDbContext<AppDbContext>(options =>
+			{
+				options.UseSqlServer(Configuration
+					.GetConnectionString("DefaultConnection"));
+			});
+
 			return Services;
 		}
 	}
