@@ -13,12 +13,14 @@ namespace Persistence.DbContexts
 		// Define DbSets here
 		// public DbSet<YourEntity> YourEntities { get; set; }
 
+		#region DbSets
 		public DbSet<Course> Course { get; set; }
-		public DbSet<Exam> Exams{ get; set; }
+		public DbSet<Exam> Exams { get; set; }
 		public DbSet<Job> Jobs { get; set; }
 		public DbSet<Phase> Phases { get; set; }
 		public DbSet<Skill> Skills { get; set; }
-		public DbSet<Track> Tracks { get; set; }
+		public DbSet<Track> Tracks { get; set; } 
+		#endregion
 
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

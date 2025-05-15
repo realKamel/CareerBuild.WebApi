@@ -26,6 +26,11 @@ namespace Domain.Entities.IdentityModule
 		public string AppUserId { get; set; } = default!;
 		public AppUser AppUser { get; set; } = default!;
 
+		#region Posts relation
+		// Navigation property for the jobs posted by this company
+		public ICollection<Job> Jobs { get; set; } = new HashSet<Job>(); // for one-to-many relationship 
+		#endregion
+
 		#endregion
 
 	}
