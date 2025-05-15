@@ -6,11 +6,15 @@ using Domain.Exceptions;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using Shared.Dtos.Identity;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,9 +23,11 @@ namespace Services
 	public class AuthenticationServices(
 		UserManager<AppUser> _userManager,
 		IMapper _mapper,
-		IUnitOfWork _unitOfWork)
+		IUnitOfWork _unitOfWork,
+		IConfiguration Configuration)
 		 : IAuthenticationServices
 	{
+		#region Helper Methods
 
 		private async Task<TEntity> LogInHelper<TEntity>(AppUser? user, LoginDto loginDto)
 			where TEntity : LoggedIn
@@ -41,7 +47,7 @@ namespace Services
 
 			var result = _mapper.Map<TEntity>(user);
 
-			result.Token = "Token";
+			result.Token = await CreateTokenAsync(user);
 
 			return result;
 		}
@@ -64,6 +70,35 @@ namespace Services
 			}
 			return user;
 		}
+
+		private async Task<string> CreateTokenAsync(AppUser user)
+		{
+			var claims = new List<Claim> {
+				new (ClaimTypes.Email,user.Email!),
+				new (ClaimTypes.NameIdentifier,user.UserName!),
+			};
+
+			var roles = await _userManager.GetRolesAsync(user);
+			foreach (var role in roles)
+			{
+				claims.Add(new Claim(ClaimTypes.Role, role));
+			}
+
+			var securityKey = Configuration.GetSection("JWToptions")["securityKey"];
+			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
+			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+
+			var token = new JwtSecurityToken(
+				issuer: Configuration.GetSection("JWToptions")["issuer"],
+				audience: Configuration.GetSection("JWToptions")["audience"],
+				claims: claims,
+				expires: DateTime.Now.AddHours(2),
+				signingCredentials: creds);
+
+			return new JwtSecurityTokenHandler().WriteToken(token);
+		}
+		#endregion
 
 		public async Task<LoggedInUserDto> LoginRegularUserAsync(LoginDto loginDto)
 		{
