@@ -3,6 +3,8 @@ using Domain.Entities.Common;
 using Domain.Entities.IdentityModule;
 using Shared.Dtos;
 using Shared.Dtos.Identity;
+using Shared.Dtos.Identity.Login;
+using Shared.Dtos.Identity.Register;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +23,7 @@ namespace Services.MappingProfiles
 			//CreateMap<RegisterUserDto, RegularUserProfile>().ReverseMap();
 
 			CreateMap<AppUser, LoggedInUserDto>()
-				.ForMember(u => u.RegularUser,
+				.ForMember(u => u.Profile,
 				op => op.MapFrom(src => src.RegularProfile))
 				.ReverseMap();
 			//.ForMember(
@@ -42,7 +44,7 @@ namespace Services.MappingProfiles
 			//src => src.RegularProfile.ResumeUrl));
 
 			CreateMap<AppUser, LoggedInCompanyDto>()
-				.ForMember(des => des.CompanyProfile,
+				.ForMember(des => des.Profile,
 				op => op.MapFrom(src => src.CompanyProfile))
 				.ReverseMap();
 

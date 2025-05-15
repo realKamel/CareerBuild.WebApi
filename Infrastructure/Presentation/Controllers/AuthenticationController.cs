@@ -1,6 +1,7 @@
 ﻿using AbstractServices;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Dtos.Identity;
+using Shared.Dtos.Identity.Login;
+using Shared.Dtos.Identity.Register;
 using System;
 using System.Collections.Generic;
 using System.Linq;

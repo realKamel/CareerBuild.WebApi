@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Shared.Dtos.Identity;
+using Shared.Dtos.Identity.Login;
+using Shared.Dtos.Identity.Register;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -30,7 +31,7 @@ namespace Services
 		#region Helper Methods
 
 		private async Task<TEntity> LogInHelper<TEntity>(AppUser? user, LoginDto loginDto)
-			where TEntity : LoggedIn
+			where TEntity : LoggedInBase
 		{
 			if (user == null)
 			{
