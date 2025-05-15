@@ -24,6 +24,10 @@ namespace Persistence.DbContexts
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
+			//to Apply Configurations From Assembly
+
+			modelBuilder
+				.ApplyConfigurationsFromAssembly(typeof(PersistenceServiceRegistration).Assembly);
 		}
 	}
 }

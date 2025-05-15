@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AppData\" />
     <Folder Include="IdentityData\" />
   </ItemGroup>
 
