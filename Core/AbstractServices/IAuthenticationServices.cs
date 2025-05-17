@@ -28,5 +28,11 @@ namespace AbstractServices
 		//register company User
 		public Task<bool> RegisterCompanyUserAsync(RegisterCompanyDto companyDto);
 
+		//to delete users
+		public Task<bool> DeleteUser(string? email);
+
+		// if user want to update his password
+		public Task<bool> UpdatePassword(string? email, string currentPassword, string newPassword);
+
 	}
 }

@@ -1,23 +1,16 @@
 ﻿using AbstractServices;
+using System;
 using AutoMapper;
-using Domain.Entities.Common;
 using Domain.Entities.IdentityModule;
 using Domain.Exceptions;
-using Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Dtos.Identity.Login;
 using Shared.Dtos.Identity.Register;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
@@ -127,6 +120,59 @@ namespace Services
 			var user = _mapper.Map<RegularUser>(registerDto);
 
 			return await RegisterAsync(user, registerDto);
+		}
+
+		public async Task<bool> DeleteUser(string? email)
+		{
+			if (email == null)
+			{
+				throw new Exception("No Email Is Provided");
+			}
+
+			var user = await _userManager.FindByIdAsync(email);
+
+			if (user == null)
+			{
+				throw new UserNotFoundException(email);
+			}
+
+			var result = await _userManager.DeleteAsync(user);
+
+			if (!result.Succeeded)
+			{
+				var errors = result.Errors
+					.Select(e => e.Description).ToList();
+				throw new BadRequestException(errors);
+			}
+			return result.Succeeded;
+
+		}
+
+		public async Task<bool> UpdatePassword(string email, string currentPassword, string newPassword)
+		{
+			if (email == null)
+			{
+				throw new Exception("No Email Is Provided");
+			}
+
+			var user = await _userManager.FindByIdAsync(email);
+
+			if (user == null)
+			{
+				throw new UserNotFoundException(email);
+			}
+
+
+			var result = await _userManager
+				.ChangePasswordAsync(user, currentPassword, newPassword);
+
+			if (!result.Succeeded)
+			{
+				var errors = result.Errors
+					.Select(e => e.Description).ToList();
+				throw new BadRequestException(errors);
+			}
+			return result.Succeeded;
 		}
 	}
 }
