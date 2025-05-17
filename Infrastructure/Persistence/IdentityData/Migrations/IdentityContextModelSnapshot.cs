@@ -77,6 +77,11 @@ namespace Persistence.IdentityData.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("UserType")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -88,83 +93,10 @@ namespace Persistence.IdentityData.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("Users", (string)null);
-                });
 
-            modelBuilder.Entity("Domain.Entities.IdentityModule.CompanyUserProfile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.HasDiscriminator<string>("UserType").HasValue("AppUser");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Industry")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Size")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("WebsiteUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId")
-                        .IsUnique();
-
-                    b.ToTable("CompanyUserProfiles");
-                });
-
-            modelBuilder.Entity("Domain.Entities.IdentityModule.RegularUserProfile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AppUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("EducationLevel")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreferredJobTitle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResumeUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserGoal")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppUserId")
-                        .IsUnique();
-
-                    b.ToTable("RegularUserProfiles");
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -281,6 +213,57 @@ namespace Persistence.IdentityData.Migrations
                     b.ToTable("User_Roles", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.IdentityModule.CompanyUser", b =>
+                {
+                    b.HasBaseType("Domain.Entities.IdentityModule.AppUser");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Industry")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WebsiteUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("Company");
+                });
+
+            modelBuilder.Entity("Domain.Entities.IdentityModule.RegularUser", b =>
+                {
+                    b.HasBaseType("Domain.Entities.IdentityModule.AppUser");
+
+                    b.Property<int>("EducationLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PreferredJobTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResumeUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserGoal")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("Regular");
+                });
+
             modelBuilder.Entity("Domain.Entities.IdentityModule.AppUser", b =>
                 {
                     b.OwnsOne("Domain.Entities.Common.Address", "Address", b1 =>
@@ -310,28 +293,6 @@ namespace Persistence.IdentityData.Migrations
 
                     b.Navigation("Address")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.IdentityModule.CompanyUserProfile", b =>
-                {
-                    b.HasOne("Domain.Entities.IdentityModule.AppUser", "AppUser")
-                        .WithOne("CompanyProfile")
-                        .HasForeignKey("Domain.Entities.IdentityModule.CompanyUserProfile", "AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("Domain.Entities.IdentityModule.RegularUserProfile", b =>
-                {
-                    b.HasOne("Domain.Entities.IdentityModule.AppUser", "AppUser")
-                        .WithOne("RegularProfile")
-                        .HasForeignKey("Domain.Entities.IdentityModule.RegularUserProfile", "AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -373,15 +334,6 @@ namespace Persistence.IdentityData.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.IdentityModule.AppUser", b =>
-                {
-                    b.Navigation("CompanyProfile")
-                        .IsRequired();
-
-                    b.Navigation("RegularProfile")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

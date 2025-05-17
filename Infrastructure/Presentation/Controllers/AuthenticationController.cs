@@ -41,7 +41,7 @@ namespace Presentation.Controllers
 		public async Task<ActionResult<bool>> RegisterCompanyUserAsync(RegisterCompanyDto userDto)
 		{
 			var result = await _serviceManager.AuthenticationServices
-				.RegisterCompanyUserAsync(userDto);
+				.RegisterCompanyAsync(userDto);
 			return Ok(result);
 		}
 	}

@@ -14,8 +14,6 @@ namespace Persistence.DbContexts
 	public class IdentityContext(DbContextOptions<IdentityContext> options) :
 		IdentityDbContext<AppUser>(options)
 	{
-		public DbSet<RegularUserProfile> RegularUserProfiles { get; set; }
-		public DbSet<CompanyUserProfile> CompanyUserProfiles { get; set; }
 		protected override void OnModelCreating(ModelBuilder b)
 		{
 			base.OnModelCreating(b);
@@ -23,18 +21,13 @@ namespace Persistence.DbContexts
 			// Configure User table
 			b.Entity<AppUser>().ToTable("Users");
 
+			b.Entity<AppUser>()
+			// Add a discriminator column named "UserType" oftype string
+			.HasDiscriminator<string>("UserType")
+			.HasValue<RegularUser>("Regular")// Store "Regular" if the row is a  RegularUser
+			.HasValue<CompanyUser>("Company");// Store "Company" if the row is a CompanyUser
 
-			b.Entity<RegularUserProfile>()
-			.HasOne(p => p.AppUser)
-			.WithOne(p => p.RegularProfile) // Indicates a one-to-one relationship
-			.HasForeignKey<RegularUserProfile>(p => p.AppUserId)
-			.IsRequired();
-
-			b.Entity<CompanyUserProfile>()
-				.HasOne(p => p.AppUser)
-				.WithOne(p => p.CompanyProfile)
-				.HasForeignKey<CompanyUserProfile>(p => p.AppUserId)
-				.IsRequired();
+			// Note: we need a HasValue for the base AppUser if it's not abstract
 
 			b.Entity<IdentityRole>().ToTable("Roles");
 			b.Entity<IdentityUserRole<string>>().ToTable("User_Roles");

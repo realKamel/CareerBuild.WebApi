@@ -12,8 +12,20 @@ namespace Persistence
 {
 	public class DataSeeding(IdentityContext _identityDb,
 		UserManager<AppUser> _userManager,
-		RoleManager<IdentityRole> _roleManager) : IDataSeeding
+		RoleManager<IdentityRole> _roleManager, AppDbContext _appDb) : IDataSeeding
 	{
+		public async Task AppDataSeeding()
+		{
+			try
+			{
+				var pendingMigration = await _identityDb.Database.GetPendingMigrationsAsync();
+			}
+			catch (Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+
 		public async Task IdentityDataSeedingAsync()
 		{
 			try

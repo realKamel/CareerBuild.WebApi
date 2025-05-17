@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Persistence.IdentityData.Migrations
 {
     /// <inheritdoc />
-    public partial class InitIdentityTables : Migration
+    public partial class InitCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -34,6 +34,17 @@ namespace Persistence.IdentityData.Migrations
                     Address_City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address_Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserType = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
+                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Size = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Industry = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WebsiteUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PreferredJobTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResumeUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserGoal = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EducationLevel = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -71,54 +82,6 @@ namespace Persistence.IdentityData.Migrations
                         name: "FK_Role_Claims_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CompanyUserProfiles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Size = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Industry = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    WebsiteUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CompanyUserProfiles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CompanyUserProfiles_Users_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RegularUserProfiles",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PreferredJobTitle = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ResumeUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserGoal = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EducationLevel = table.Column<int>(type: "int", nullable: false),
-                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RegularUserProfiles", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RegularUserProfiles_Users_AppUserId",
-                        column: x => x.AppUserId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -189,18 +152,6 @@ namespace Persistence.IdentityData.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CompanyUserProfiles_AppUserId",
-                table: "CompanyUserProfiles",
-                column: "AppUserId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RegularUserProfiles_AppUserId",
-                table: "RegularUserProfiles",
-                column: "AppUserId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Role_Claims_RoleId",
                 table: "Role_Claims",
                 column: "RoleId");
@@ -243,12 +194,6 @@ namespace Persistence.IdentityData.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "CompanyUserProfiles");
-
-            migrationBuilder.DropTable(
-                name: "RegularUserProfiles");
-
             migrationBuilder.DropTable(
                 name: "Role_Claims");
 

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Domain.Interfaces;
-using Persistence.Repositories;
+//using Persistence.Repositories;
 
 namespace Persistence
 {
@@ -35,7 +35,8 @@ namespace Persistence
 
 			Services.AddScoped<IDataSeeding, DataSeeding>();
 
-			Services.AddScoped<IUnitOfWork, UnitOfWork>();
+			
+			//Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 
