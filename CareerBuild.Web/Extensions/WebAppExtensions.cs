@@ -9,7 +9,10 @@ namespace CareerBuild.Web.Extensions
 		{
 			using var scope = app.Services.CreateScope();
 			var DataSeedingObj = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
-			await DataSeedingObj.IdentityDataSeedingAsync();
+			
+			await DataSeedingObj.AppDataSeeding();// for app data
+												 
+			await DataSeedingObj.IdentityDataSeedingAsync(); // for identity data
 		}
 
 		public static IApplicationBuilder UseSwaggerMiddleware(this WebApplication app)

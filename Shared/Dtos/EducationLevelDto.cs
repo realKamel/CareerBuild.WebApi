@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entities.Common
+namespace Shared.Dtos
 {
-	public enum EducationLevel
+	public enum EducationLevelDto
 	{
 		SecondaryEducation = 1,
 		// Typically completed around age 18 (e.g., high school diploma, vocational training completion)

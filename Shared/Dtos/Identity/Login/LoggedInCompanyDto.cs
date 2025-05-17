@@ -8,6 +8,9 @@ namespace Shared.Dtos.Identity.Login
 {
 	public class LoggedInCompanyDto : LoggedInBase
 	{
-		public CompanyProfileDto Profile { get; set; } = default!;
+		public string CompanyName { get; set; } = default!;
+		public string Size { get; set; } = default!;
+		public string Industry { get; set; } = default!;
+		public string WebsiteUrl { get; set; } = default!;
 	}
 }

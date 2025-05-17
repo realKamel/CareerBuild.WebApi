@@ -22,6 +22,6 @@ namespace Shared.Dtos.Identity.Register
 
 		public string UserGoal { get; set; } = default!;
 
-		public string EducationLevel { get; set; } = default!;
+		public EducationLevelDto EducationLevel { get; set; } = default!;
 	}
 }

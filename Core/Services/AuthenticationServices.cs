@@ -24,15 +24,67 @@ namespace Services
 	public class AuthenticationServices(
 		UserManager<AppUser> _userManager,
 		IMapper _mapper,
-		IUnitOfWork _unitOfWork,
 		IConfiguration Configuration)
 		 : IAuthenticationServices
 	{
 		#region Helper Methods
-
-		private async Task<TEntity> LogInHelper<TEntity>(AppUser? user, LoginDto loginDto)
-			where TEntity : LoggedInBase
+		private async Task<string> CreateTokenAsync(AppUser user)
 		{
+			// Collect user claims
+			var claims = new List<Claim>
+			{
+				new(ClaimTypes.Email, user.Email!),
+				new(ClaimTypes.NameIdentifier, user.UserName!)
+			};
+
+			// Dynamically retrieve roles based on user type
+			var roles = await _userManager.GetRolesAsync(user);
+
+			// Add roles to claims
+			claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
+			// Retrieve JWT options from configuration
+			var jwtOptions = Configuration.GetSection("JWToptions");
+			var securityKey = jwtOptions["securityKey"];
+			var issuer = jwtOptions["issuer"];
+			var audience = jwtOptions["audience"];
+
+			// Create signing credentials
+			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
+			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+			// Generate the token
+			var token = new JwtSecurityToken(
+				issuer: issuer,
+				audience: audience,
+				claims: claims,
+				expires: DateTime.UtcNow.AddHours(2),
+				signingCredentials: creds
+			);
+
+			return new JwtSecurityTokenHandler().WriteToken(token);
+		}
+		public async Task<bool> RegisterAsync<TEntity, TRegister>(TEntity entity, TRegister registerDto)
+			where TEntity : AppUser
+			where TRegister : RegisterBaseDto
+		{
+			var result = await _userManager
+				.CreateAsync(entity, registerDto.Password);
+
+			if (!result.Succeeded)
+			{
+				var errors = result.Errors
+					.Select(e => e.Description).ToList();
+				throw new BadRequestException(errors);
+			}
+			return result.Succeeded;
+		}
+		public async Task<TLoggedIn> LoginHelper<TEntity, TLoggedIn>(LoginDto loginDto)
+			where TEntity : AppUser
+			where TLoggedIn : LoggedInBase
+		{
+			TEntity? user = await _userManager.FindByEmailAsync(loginDto.Email) as TEntity;
+
 			if (user == null)
 			{
 				throw new UserNotFoundException(loginDto.Email);
@@ -46,120 +98,35 @@ namespace Services
 				throw new WrongLoginException();
 			}
 
-			var result = _mapper.Map<TEntity>(user);
-
+			var result = _mapper.Map<TLoggedIn>(user);
 			result.Token = await CreateTokenAsync(user);
 
 			return result;
 		}
-
-		private async Task<AppUser> RegisterHelper<TEntity>(TEntity registerDto)
-		where TEntity : RegisterBaseDto
-		{
-			var user = _mapper.Map<AppUser>(registerDto);
-
-			var result = await _userManager.CreateAsync(user, registerDto.Password);
-
-			if (!result.Succeeded)
-			{
-				var errors = result.Errors.Select(e => e.Description).ToList();
-				throw new BadRequestException(errors);
-			}
-			if (user == null)
-			{
-				throw new Exception("internal Error");
-			}
-			return user;
-		}
-
-		private async Task<string> CreateTokenAsync(AppUser user)
-		{
-			var claims = new List<Claim> {
-				new (ClaimTypes.Email,user.Email!),
-				new (ClaimTypes.NameIdentifier,user.UserName!),
-			};
-
-			var roles = await _userManager.GetRolesAsync(user);
-			foreach (var role in roles)
-			{
-				claims.Add(new Claim(ClaimTypes.Role, role));
-			}
-
-			var securityKey = Configuration.GetSection("JWToptions")["securityKey"];
-			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(securityKey));
-			var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-
-			var token = new JwtSecurityToken(
-				issuer: Configuration.GetSection("JWToptions")["issuer"],
-				audience: Configuration.GetSection("JWToptions")["audience"],
-				claims: claims,
-				expires: DateTime.Now.AddHours(2),
-				signingCredentials: creds);
-
-			return new JwtSecurityTokenHandler().WriteToken(token);
-		}
 		#endregion
-
 		public async Task<LoggedInUserDto> LoginRegularUserAsync(LoginDto loginDto)
 		{
-			//var user = await _userManager.FindByEmailAsync(loginDto.Email);
-			var user = await _userManager.Users
-				.Include(u => u.RegularProfile)
-				.FirstOrDefaultAsync(x => x.NormalizedEmail == loginDto.Email.ToUpper());
-
-			return await LogInHelper<LoggedInUserDto>(user, loginDto);
+			return await LoginHelper<RegularUser, LoggedInUserDto>(loginDto);
 		}
 
 		public async Task<LoggedInCompanyDto> LoginCompanyAsync(LoginDto loginDto)
 		{
-			var user = await _userManager.Users
-				.Include(u => u.CompanyProfile)
-				.FirstOrDefaultAsync(x => x.NormalizedEmail == loginDto.Email.ToUpper());
-
-			return await LogInHelper<LoggedInCompanyDto>(user, loginDto);
+			return await LoginHelper<CompanyUser, LoggedInCompanyDto>(loginDto);
 		}
 
-		public async Task<bool> RegisterCompanyUserAsync(RegisterCompanyDto companyDto)
+		public async Task<bool> RegisterCompanyUserAsync(RegisterCompanyDto registerDto)
 		{
 			// it's not possible to have null user as the function will throw exception
-			var user = await RegisterHelper<RegisterCompanyDto>(companyDto);
+			var user = _mapper.Map<CompanyUser>(registerDto);
 
-			var companyProfile = _mapper.Map<CompanyUserProfile>(companyDto);
-
-			companyProfile.AppUserId = user.Id; // nav property
-
-			try
-			{
-				await _unitOfWork.CompanyUserRepository.AddAsync(companyProfile);
-			}
-			catch (Exception e)
-			{
-				throw new Exception(e.Message);
-			}
-
-			return await _unitOfWork.SaveChangesAsync() > 0;
+			return await RegisterAsync(user, registerDto);
 		}
 
-		public async Task<bool> RegisterRegularUserAsync(RegisterUserDto userDto)
+		public async Task<bool> RegisterRegularUserAsync(RegisterUserDto registerDto)
 		{
-			var user = await RegisterHelper<RegisterUserDto>(userDto);
+			var user = _mapper.Map<RegularUser>(registerDto);
 
-			var regularUser = _mapper.Map<RegularUserProfile>(userDto);
-
-			regularUser.AppUserId = user.Id;
-
-			try
-			{
-
-				await _unitOfWork.RegularUserRepository.AddAsync(regularUser);
-			}
-			catch (Exception e)
-			{
-				throw new Exception(e.Message);
-			}
-
-			return await _unitOfWork.SaveChangesAsync() > 0;
+			return await RegisterAsync(user, registerDto);
 		}
 	}
 }

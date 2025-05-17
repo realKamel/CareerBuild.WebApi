@@ -8,6 +8,11 @@ namespace Shared.Dtos.Identity.Login
 {
 	public class LoggedInUserDto : LoggedInBase
 	{
-		public RegularUserDto Profile { get; set; } = default!;
+		public string FirstName { get; set; } = default!;
+		public string LastName { get; set; } = default!;
+		public string? PreferredJobTitle { get; set; } = default!;
+		public string? ResumeUrl { get; set; } = default!;
+		public string UserGoal { get; set; } = default!;
+		public string EducationLevel { get; set; } = default!;
 	}
 }

@@ -16,14 +16,5 @@ namespace Domain.Entities.IdentityModule
 		public Address Address { get; set; } = default!;
 		public string? PictureUrl { get; set; } = default!;
 		#endregion
-
-		#region Extentions Profiles
-		// one-to-one relationships
-		[InverseProperty(nameof(RegularUserProfile.AppUser))]
-		public RegularUserProfile? RegularProfile { get; set; } = default!;
-
-		[InverseProperty(nameof(CompanyUserProfile.AppUser))]
-		public CompanyUserProfile? CompanyProfile { get; set; } = default!;
-		#endregion
 	}
 }
