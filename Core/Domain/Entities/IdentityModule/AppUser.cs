@@ -20,10 +20,10 @@ namespace Domain.Entities.IdentityModule
 		#region Extentions Profiles
 		// one-to-one relationships
 		[InverseProperty(nameof(RegularUserProfile.AppUser))]
-		public RegularUserProfile RegularProfile { get; set; } = default!;
+		public RegularUserProfile? RegularProfile { get; set; } = default!;
 
 		[InverseProperty(nameof(CompanyUserProfile.AppUser))]
-		public CompanyUserProfile CompanyProfile { get; set; } = default!;
+		public CompanyUserProfile? CompanyProfile { get; set; } = default!;
 		#endregion
 	}
 }

@@ -15,9 +15,20 @@ namespace Persistence.AppData.Configurations
 		public void Configure(EntityTypeBuilder<Track> builder)
 		{
 			builder.HasKey(d => d.TrackId);
+
 			builder.Property(d => d.DifficultyLevel)
 				.HasConversion(dl => dl.ToString(),
 				(dl => Enum.Parse<DifficultyLevel>(dl)));
+
+			builder.HasMany(b => b.TrackPrerequisites)
+				.WithOne(b => b.Track)
+				.HasForeignKey(b => b.TrackId);
+
+			builder.HasMany(t => t.Phases)
+				.WithOne(t => t.Track)
+				.HasForeignKey(t => t.TrackId)
+				.OnDelete(DeleteBehavior.Cascade);
+
 		}
 	}
 }

@@ -30,21 +30,6 @@ namespace Domain.Entities.IdentityModule
 		public string AppUserId { get; set; } = default!; // IdentityUser ID is string
 		public AppUser AppUser { get; set; } = default!;
 
-		#region UserEnteredExams Relations
-		public ICollection<UserEnteredExams> UserEnteredExams { get; set; } = new HashSet<UserEnteredExams>();
-		#endregion
-		#region UserPassedPhases Relations
-		public ICollection<UserPassedPhases> UserPassedPhases { get; set; } = new HashSet<UserPassedPhases>();
-		#endregion
-		#region UserAppliedJobs
-		public ICollection<UserAppliedJobs> UserAppliedJobs { get; set; } = new HashSet<UserAppliedJobs>();
-		#endregion
-		#region UserAcquiredSkills
-		public ICollection<UserAcquiredSkills> UserAcquiredSkills { get; set; } = new HashSet<UserAcquiredSkills>();
-		#endregion
-		#region MyRegion
-		public ICollection<UserEnrolledTracks> UserEnrolledTracks { get; set; } = new HashSet<UserEnrolledTracks>();
-		#endregion
 		#endregion
 	}
 }

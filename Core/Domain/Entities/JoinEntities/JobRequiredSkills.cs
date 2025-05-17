@@ -9,7 +9,6 @@ namespace Domain.Entities.JoinEntities
 {
 	public class JobRequiredSkills
 	{
-
 		public Proficiency RequiredProficiency { get; set; } = default!;
 		// the proficiency level required for the skill
 		public bool IsMandatory { get; set; } = true; // true if the skill is mandatory, false if it is optional

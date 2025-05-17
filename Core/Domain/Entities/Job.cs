@@ -24,14 +24,10 @@ namespace Domain.Entities
 		public decimal MinSalary { get; set; }
 		public decimal MaxSalary { get; set; }
 
-		[ForeignKey(nameof(Company))]
-		public int CompanyId { get; set; }
-		public CompanyUserProfile Company { get; set; } = null!;
+		public string CompanyEmail { get; set; } = null!;
 
 		#region Relations
 		public ICollection<JobRequiredSkills> JobRequiredSkills { get; set; } = new HashSet<JobRequiredSkills>();
-
-		public ICollection<UserAppliedJobs> UserAppliedJobs { get; set; } = new HashSet<UserAppliedJobs>();
 		#endregion
 	}
 }

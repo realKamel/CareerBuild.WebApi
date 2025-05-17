@@ -22,6 +22,12 @@ namespace Persistence.AppData.Configurations
 				cd => Enum.Parse<DifficultyLevel>(cd));
 			builder.Property(c => c.Price)
 				.HasColumnType<decimal>("decimal(10,2)");
+
+			builder.HasOne(c => c.Phase)
+				.WithMany(p => p.Courses)
+				.HasForeignKey(c => c.PhaseId)
+				.OnDelete(DeleteBehavior.NoAction); // SetNull or Cascade 
+
 		}
 	}
 }

@@ -14,7 +14,7 @@ namespace Persistence.AppData.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Job> builder)
 		{
-			builder.HasKey(j => j.JobId); //PK
+			builder.HasKey(j => j.Id); //PK
 
 			// the Address is mapped by data notation to be owned class 
 
@@ -28,13 +28,11 @@ namespace Persistence.AppData.Configurations
 			builder.Property(j => j.MaxSalary)
 				.HasColumnType("decimal(10,2)");
 
+			// Configure the Salary range check constraint
 			builder.ToTable(jt =>
 			jt.HasCheckConstraint("ensure_salary_Range_check",
 			"[MaxSalary] >= [MinSalary]"));
 
-
-			builder.ToTable(t =>
-			t.HasCheckConstraint("ensure_salary_Range_check", "[Salary] >= 1000"));
 		}
 	}
 }

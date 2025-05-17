@@ -20,7 +20,6 @@ namespace Domain.Entities
 		#region Relations
 		public ICollection<TrackPrerequisites>? TrackPrerequisites { get; set; }
 		public ICollection<Phase> Phases { get; set; } = new HashSet<Phase>();
-		public ICollection<UserEnrolledTracks> UserEnrolledTracks { get; set; } = new HashSet<UserEnrolledTracks>();
 		#endregion
 	}
 }

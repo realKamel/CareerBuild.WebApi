@@ -12,7 +12,6 @@ namespace Domain.Entities
 		public int Id { get; set; }
 		public string Name { get; set; } = default!;
 		public string? Description { get; set; }
-		public bool IsPassed { get; set; }
 		public TimeOnly EstimatedDuration { get; set; }
 
 
@@ -29,10 +28,6 @@ namespace Domain.Entities
 
 		#region Course relations
 		public ICollection<Course> Courses { get; set; } = new HashSet<Course>();
-		#endregion
-
-		#region UserPassedPhases
-		public ICollection<UserPassedPhases> UserPassedPhases { get; set; } = new HashSet<UserPassedPhases>();
 		#endregion
 
 		#region PhaseProvidedSkills

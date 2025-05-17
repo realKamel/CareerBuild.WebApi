@@ -1,4 +1,5 @@
-﻿using Domain.Entities.JoinEntities;
+﻿using Domain.Entities.Common;
+using Domain.Entities.JoinEntities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,7 @@ namespace Domain.Entities
 		[Key]
 		public int Id { get; set; }
 		public string Name { get; set; } = null!;
-		public string? Category { get; set; }
+		public SkillCategory? Category { get; set; }
 		public string? Description { get; set; }
 
 		#region Relations
@@ -33,9 +34,6 @@ namespace Domain.Entities
 
 		#region PhaseProvidedSkills relations
 		public ICollection<PhaseProvidedSkills> PhaseProvidedSkills { get; set; } = new HashSet<PhaseProvidedSkills>();
-		#endregion
-		#region MyRegion
-		public ICollection<UserAcquiredSkills> UserAcquiredSkills { get; set; } = new HashSet<UserAcquiredSkills>();
 		#endregion
 		#endregion
 	}

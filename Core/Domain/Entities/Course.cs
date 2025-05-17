@@ -29,7 +29,6 @@ namespace Domain.Entities
 		public Phase Phase { get; set; } = default!;
 		#endregion
 
-
 		#endregion
 	}
 }
