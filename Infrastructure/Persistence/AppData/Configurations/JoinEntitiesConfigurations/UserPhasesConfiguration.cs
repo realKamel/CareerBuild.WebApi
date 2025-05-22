@@ -9,19 +9,19 @@ using System.Threading.Tasks;
 
 namespace Persistence.AppData.Configurations.JoinEntitiesConfigurations
 {
-	internal class UserPassedPhasesConfiguration : IEntityTypeConfiguration<UserPassedPhases>
+	internal class UserPhasesConfiguration : IEntityTypeConfiguration<UserPhases>
 	{
-		public void Configure(EntityTypeBuilder<UserPassedPhases> builder)
+		public void Configure(EntityTypeBuilder<UserPhases> builder)
 		{
 			builder.HasKey(b => new {b.TrackId , b.PhaseId});
 
 			builder.HasOne(b => b.Track)
-				.WithMany(b => b.UserPassedPhases)
+				.WithMany(b => b.UserPhases)
 				.HasForeignKey(b => b.TrackId)
 				.OnDelete(DeleteBehavior.NoAction);
 
 			builder.HasOne(b => b.Phase)
-				.WithMany(b => b.UserPassedPhases)
+				.WithMany(b => b.UserPhases)
 				.HasForeignKey(b => b.PhaseId)
 				.OnDelete(DeleteBehavior.NoAction);
 		}

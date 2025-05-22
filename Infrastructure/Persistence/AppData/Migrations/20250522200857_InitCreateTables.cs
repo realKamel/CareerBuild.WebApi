@@ -44,23 +44,17 @@ namespace Persistence.AppData.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location_Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location_City = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Location_Country = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PostedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EmploymentType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MinSalary = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     MaxSalary = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    CompanyEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CompanyEmail = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -76,7 +70,7 @@ namespace Persistence.AppData.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    EstimatedDuration = table.Column<TimeOnly>(type: "time", nullable: false),
+                    EstimatedDurationInHours = table.Column<int>(type: "int", nullable: false),
                     DifficultyLevel = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
@@ -157,9 +151,9 @@ namespace Persistence.AppData.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
-                    EstimatedDuration = table.Column<TimeOnly>(type: "time", nullable: false),
+                    EstimatedDurationInHours = table.Column<int>(type: "int", nullable: false),
                     TrackId = table.Column<int>(type: "int", nullable: false),
-                    ExamId = table.Column<int>(type: "int", nullable: false),
+                    ExamId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -234,7 +228,7 @@ namespace Persistence.AppData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Course",
+                name: "Courses",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -243,10 +237,10 @@ namespace Persistence.AppData.Migrations
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     CourseUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Duration = table.Column<TimeOnly>(type: "time", nullable: false),
+                    DurationInHours = table.Column<int>(type: "int", nullable: false),
                     ProviderName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DifficultyLevel = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhaseId = table.Column<int>(type: "int", nullable: false),
+                    PhaseId = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -257,9 +251,9 @@ namespace Persistence.AppData.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Course", x => x.Id);
+                    table.PrimaryKey("PK_Courses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Course_Phases_PhaseId",
+                        name: "FK_Courses_Phases_PhaseId",
                         column: x => x.PhaseId,
                         principalTable: "Phases",
                         principalColumn: "Id");
@@ -299,8 +293,8 @@ namespace Persistence.AppData.Migrations
                     Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: true),
                     Category = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ExamID = table.Column<int>(type: "int", nullable: false),
-                    CourseID = table.Column<int>(type: "int", nullable: false),
+                    ExamID = table.Column<int>(type: "int", nullable: true),
+                    CourseID = table.Column<int>(type: "int", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -313,21 +307,19 @@ namespace Persistence.AppData.Migrations
                 {
                     table.PrimaryKey("PK_Skills", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Skills_Course_CourseID",
+                        name: "FK_Skills_Courses_CourseID",
                         column: x => x.CourseID,
-                        principalTable: "Course",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalTable: "Courses",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Skills_Exams_ExamID",
                         column: x => x.ExamID,
                         principalTable: "Exams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobRequiredSkills",
+                name: "JobSkills",
                 columns: table => new
                 {
                     JobId = table.Column<int>(type: "int", nullable: false),
@@ -337,15 +329,15 @@ namespace Persistence.AppData.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobRequiredSkills", x => new { x.JobId, x.SkillId });
+                    table.PrimaryKey("PK_JobSkills", x => new { x.JobId, x.SkillId });
                     table.ForeignKey(
-                        name: "FK_JobRequiredSkills_Jobs_JobId",
+                        name: "FK_JobSkills_Jobs_JobId",
                         column: x => x.JobId,
                         principalTable: "Jobs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_JobRequiredSkills_Skills_SkillId",
+                        name: "FK_JobSkills_Skills_SkillId",
                         column: x => x.SkillId,
                         principalTable: "Skills",
                         principalColumn: "Id",
@@ -353,7 +345,7 @@ namespace Persistence.AppData.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PhaseProvidedSkills",
+                name: "PhaseSkills",
                 columns: table => new
                 {
                     PhaseId = table.Column<int>(type: "int", nullable: false),
@@ -362,14 +354,14 @@ namespace Persistence.AppData.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PhaseProvidedSkills", x => new { x.PhaseId, x.SkillId });
+                    table.PrimaryKey("PK_PhaseSkills", x => new { x.PhaseId, x.SkillId });
                     table.ForeignKey(
-                        name: "FK_PhaseProvidedSkills_Phases_PhaseId",
+                        name: "FK_PhaseSkills_Phases_PhaseId",
                         column: x => x.PhaseId,
                         principalTable: "Phases",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_PhaseProvidedSkills_Skills_SkillId",
+                        name: "FK_PhaseSkills_Skills_SkillId",
                         column: x => x.SkillId,
                         principalTable: "Skills",
                         principalColumn: "Id");
@@ -403,30 +395,31 @@ namespace Persistence.AppData.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Course_PhaseId",
-                table: "Course",
+                name: "IX_Courses_PhaseId",
+                table: "Courses",
                 column: "PhaseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_JobRequiredSkills_SkillId",
-                table: "JobRequiredSkills",
-                column: "SkillId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PhaseProvidedSkills_SkillId",
-                table: "PhaseProvidedSkills",
+                name: "IX_JobSkills_SkillId",
+                table: "JobSkills",
                 column: "SkillId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Phases_ExamId",
                 table: "Phases",
                 column: "ExamId",
-                unique: true);
+                unique: true,
+                filter: "[ExamId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Phases_TrackId",
                 table: "Phases",
                 column: "TrackId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PhaseSkills_SkillId",
+                table: "PhaseSkills",
+                column: "SkillId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Skills_CourseID",
@@ -474,10 +467,10 @@ namespace Persistence.AppData.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "JobRequiredSkills");
+                name: "JobSkills");
 
             migrationBuilder.DropTable(
-                name: "PhaseProvidedSkills");
+                name: "PhaseSkills");
 
             migrationBuilder.DropTable(
                 name: "TrackPrerequisites");
@@ -504,7 +497,7 @@ namespace Persistence.AppData.Migrations
                 name: "Skills");
 
             migrationBuilder.DropTable(
-                name: "Course");
+                name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "Phases");

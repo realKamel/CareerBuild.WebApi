@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class UserPassedPhases
+	public class UserPhases
 	{
 		public string UserEmail { get; set; } = default!;
 

@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Identity;
 using Domain.Interfaces;
+using Persistence.Repositories;
 //using Persistence.Repositories;
 
 namespace Persistence
@@ -28,15 +29,14 @@ namespace Persistence
 			Services.AddIdentityCore<AppUser>(options =>
 			{
 				options.User.RequireUniqueEmail = true;
-
 			})
 			.AddRoles<IdentityRole>()
 			.AddEntityFrameworkStores<IdentityContext>();
 
 			Services.AddScoped<IDataSeeding, DataSeeding>();
 
-			
-			//Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+			Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 
 

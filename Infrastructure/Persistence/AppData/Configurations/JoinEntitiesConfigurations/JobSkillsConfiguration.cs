@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Persistence.AppData.Configurations.JoinEntitiesConfigurations
 {
-	public class JobRequiredSkillsConfiguration : IEntityTypeConfiguration<JobRequiredSkills>
+	public class JobSkillsConfiguration : IEntityTypeConfiguration<JobSkills>
 	{
-		public void Configure(EntityTypeBuilder<JobRequiredSkills> builder)
+		public void Configure(EntityTypeBuilder<JobSkills> builder)
 		{
 			builder.HasKey(jrs => new { jrs.JobId, jrs.SkillId });
 
@@ -20,11 +20,11 @@ namespace Persistence.AppData.Configurations.JoinEntitiesConfigurations
 			 .HasConversion<string>();
 
 			builder.HasOne(jrs => jrs.Job)
-				.WithMany(j => j.JobRequiredSkills)
+				.WithMany(j => j.JobSkills)
 				.HasForeignKey(jrs => jrs.JobId);
 
 			builder.HasOne(jrs => jrs.Skill)
-				.WithMany(s => s.JobRequiredSkills)
+				.WithMany(s => s.JobSkills)
 				.HasForeignKey(jrs => jrs.SkillId);
 		}
 	}

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class UserEnteredExam : UserBaseEntity
+	public class UserExam : UserBaseEntity
 	{
 		public int AttemptCount { get; set; } = 1;
 		public DateTime? LastAttemptDate { get; set; } = null;

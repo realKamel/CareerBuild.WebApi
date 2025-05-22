@@ -76,7 +76,9 @@ namespace Services
 			where TEntity : AppUser
 			where TLoggedIn : LoggedInBase
 		{
-			TEntity? user = await _userManager.FindByEmailAsync(loginDto.Email) as TEntity;
+			//TEntity? user = await _userManager.FindByEmailAsync("ali@gmail.com") as TEntity;
+			var user = await _userManager.FindByEmailAsync("ali@gmail.com");
+
 
 			if (user == null)
 			{

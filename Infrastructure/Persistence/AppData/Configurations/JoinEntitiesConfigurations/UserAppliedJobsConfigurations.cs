@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Persistence.AppData.Configurations.JoinEntitiesConfigurations
 {
-	internal class UserAppliedJobsConfigurations : IEntityTypeConfiguration<UserAppliedJobs>
+	internal class UserJobsConfigurations : IEntityTypeConfiguration<UserJobs>
 	{
-		public void Configure(EntityTypeBuilder<UserAppliedJobs> builder)
+		public void Configure(EntityTypeBuilder<UserJobs> builder)
 		{
 			builder.HasKey(b => b.Id);
 
 			builder.HasOne(b=> b.Job)
-				.WithMany(b=> b.UserAppliedJobs)
+				.WithMany(b=> b.UserJobs)
 				.HasForeignKey(b=> b.JobId);
 		}
 	}

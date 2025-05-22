@@ -16,20 +16,19 @@ namespace Domain.Entities
 
 		[MaxLength(1000, ErrorMessage = "Maximum length is {1000}")]
 		public string? Description { get; set; } = null!; // required
-		public TimeOnly EstimatedDuration { get; set; }
+		public int EstimatedDurationInHours { get; set; }
 		public DifficultyLevel DifficultyLevel { get; set; }
 
 
 		#region Relations
+		public ICollection<Phase> Phases { get; set; } = new HashSet<Phase>();
 
 		public ICollection<TrackPrerequisites>? TrackPrerequisites { get; set; }
 			= new HashSet<TrackPrerequisites>();
 
-		public ICollection<Phase> Phases { get; set; } = new HashSet<Phase>();
+		public ICollection<UserPhases>? UserPhases = new HashSet<UserPhases>();
 
-		public ICollection<UserPassedPhases> UserPassedPhases = new HashSet<UserPassedPhases>();
-
-		public ICollection<UserEnrolledTracks> UserEnrolledTracks = new HashSet<UserEnrolledTracks>();
+		public ICollection<UserTracks>? UserTracks = new HashSet<UserTracks>();
 
 		#endregion
 	}

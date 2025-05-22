@@ -15,7 +15,7 @@ namespace Domain.Entities
 
 		[MaxLength(1000, ErrorMessage = "Maximum length is {1000}")]
 		public string? Description { get; set; } = null!; // required
-		public TimeOnly EstimatedDuration { get; set; }
+		public int EstimatedDurationInHours { get; set; }
 
 		#region Relations
 		#region Track relation
@@ -24,19 +24,19 @@ namespace Domain.Entities
 		#endregion
 
 		#region Exam relation
-		public int ExamId { get; set; }
-		public Exam Exam { get; set; } = default!;
+		public int? ExamId { get; set; }
+		public Exam? Exam { get; set; } = default!;
 		#endregion
 
 		#region Course relations
-		public ICollection<Course> Courses { get; set; } = new HashSet<Course>();
+		public ICollection<Course>? Courses { get; set; } = new HashSet<Course>();
 		#endregion
 
 		#region PhaseProvidedSkills
-		public ICollection<PhaseProvidedSkills> PhaseProvidedSkills { get; set; } = new HashSet<PhaseProvidedSkills>();
+		public ICollection<PhaseSkills>? PhaseSkills { get; set; } = new HashSet<PhaseSkills>();
 		#endregion
 
-		public ICollection<UserPassedPhases> UserPassedPhases { get; set; } = new HashSet<UserPassedPhases>();
+		public ICollection<UserPhases>? UserPhases { get; set; } = new HashSet<UserPhases>();
 		#endregion
 	}
 }

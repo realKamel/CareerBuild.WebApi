@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Persistence.AppData.Configurations.JoinEntitiesConfigurations
 {
-	public class UserEnteredExamsConfiguration : IEntityTypeConfiguration<UserEnteredExam>
+	public class UserExamsConfiguration : IEntityTypeConfiguration<UserExam>
 	{
-		public void Configure(EntityTypeBuilder<UserEnteredExam> builder)
+		public void Configure(EntityTypeBuilder<UserExam> builder)
 		{
 			builder.HasKey(b => b.Id);
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class JobRequiredSkills
+	public class JobSkills
 	{
 		public Proficiency RequiredProficiency { get; set; } = default!;
 		// the proficiency level required for the skill

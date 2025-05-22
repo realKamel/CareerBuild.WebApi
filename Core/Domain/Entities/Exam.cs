@@ -32,7 +32,7 @@ namespace Domain.Entities
 		#endregion
 
 		#region UserEnteredExams Relations
-		public ICollection<UserEnteredExam> UserEnteredExams { get; set; } = new HashSet<UserEnteredExam>();
+		public ICollection<UserExam> UserEnteredExams { get; set; } = new HashSet<UserExam>();
 		#endregion
 
 		#endregion

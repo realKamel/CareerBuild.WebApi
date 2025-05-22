@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class PhaseProvidedSkills
+	public class PhaseSkills
 	{
 		public string RecommendationReason { get; set; } = null!;
 		#region Relations

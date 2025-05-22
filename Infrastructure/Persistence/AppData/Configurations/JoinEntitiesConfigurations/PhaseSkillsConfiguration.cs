@@ -9,20 +9,20 @@ using System.Threading.Tasks;
 
 namespace Persistence.AppData.Configurations.JoinEntitiesConfigurations
 {
-	public class PhaseProvidedSkillsConfiguration : IEntityTypeConfiguration<PhaseProvidedSkills>
+	public class PhaseSkillsConfiguration : IEntityTypeConfiguration<PhaseSkills>
 	{
-		public void Configure(EntityTypeBuilder<PhaseProvidedSkills> builder)
+		public void Configure(EntityTypeBuilder<PhaseSkills> builder)
 		{
 			builder.HasKey(x => new { x.PhaseId, x.SkillId });
-			builder.ToTable("PhaseProvidedSkills");
+			builder.ToTable("PhaseSkills");
 
 			builder.HasOne(x => x.Phase)
-				.WithMany(x => x.PhaseProvidedSkills)
+				.WithMany(x => x.PhaseSkills)
 				.HasForeignKey(x => x.PhaseId)
 				.OnDelete(DeleteBehavior.NoAction);
 
 			builder.HasOne(x => x.Skill)
-				.WithMany(x => x.PhaseProvidedSkills)
+				.WithMany(x => x.PhaseSkills)
 				.HasForeignKey(x => x.SkillId)
 				.OnDelete(DeleteBehavior.NoAction);
 		}
