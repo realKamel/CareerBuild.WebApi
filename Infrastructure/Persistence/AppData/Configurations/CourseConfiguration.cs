@@ -14,7 +14,7 @@ namespace Persistence.AppData.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Course> builder)
 		{
-			builder.HasKey(x => x.CourseId);// for PK
+			builder.HasKey(x => x.Id);// for PK
 
 			//For the conversion of the Enum
 			builder.Property(c => c.DifficultyLevel)

@@ -14,7 +14,8 @@ namespace Persistence.AppData.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Track> builder)
 		{
-			builder.HasKey(d => d.TrackId);
+
+			builder.HasKey(x => x.Id);// for PK
 
 			builder.Property(d => d.DifficultyLevel)
 				.HasConversion(dl => dl.ToString(),

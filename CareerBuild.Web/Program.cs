@@ -14,6 +14,7 @@ namespace CareerBuild.Web
 		public static async Task Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
+			
 
 			#region DI Services Container
 			// Add services to the container.

@@ -14,7 +14,7 @@ namespace Persistence.AppData.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Job> builder)
 		{
-			builder.HasKey(j => j.Id); //PK
+			builder.HasKey(x => x.Id);// for PK
 
 			// the Address is mapped by data notation to be owned class 
 

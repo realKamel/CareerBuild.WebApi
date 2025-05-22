@@ -8,18 +8,15 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class UserEnteredExams
+	public class UserEnteredExam : UserBaseEntity
 	{
-		[Key]
-		public string UserEmail { get; set; } = default!;
 		public int AttemptCount { get; set; } = 1;
 		public DateTime? LastAttemptDate { get; set; } = null;
-		public DateTime StartedAt { get; set; } = DateTime.UtcNow;
 		public DateTime? FinishedAt { get; set; } = null;
 		public decimal Score { get; set; }
 		public bool IsPassed { get; set; } = false;
 		#region Relations
-		public ICollection<Exam> Exams { get; set; } = new HashSet<Exam>();
+		public Exam Exams { get; set; } = default!;
 		#endregion
 	}
 }

@@ -9,12 +9,10 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class UserAppliedJobs
+	public class UserAppliedJobs : UserBaseEntity
 	{
-		[Key]
-		public string UserEmail { get; set; } = default!;
-		public ICollection<Job> Jobs { get; set; } = new HashSet<Job>();
-		public DateTime AppliedAt { get; set; } = DateTime.Now;
+		public int JobId { get; set; }
+		public Job Job { get; set; } = default!;
 		public ApplicationStatus ApplicationStatusStatus { get; set; }
 	}
 }

@@ -148,7 +148,7 @@ namespace Services
 
 		}
 
-		public async Task<bool> UpdatePassword(string email, string currentPassword, string newPassword)
+		public async Task<bool> UpdatePassword(string? email, string currentPassword, string newPassword)
 		{
 			if (email == null)
 			{

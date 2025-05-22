@@ -9,13 +9,14 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-	public class Skill
+	public class Skill : BaseEntity<int>
 	{
-		[Key]
-		public int Id { get; set; }
-		public string Name { get; set; } = null!;
+		[MaxLength(250, ErrorMessage = "Maximum length is {250}")]
+		public string Name { get; set; } = null!; // required
+
+		[MaxLength(1000, ErrorMessage = "Maximum length is {1000}")]
+		public string? Description { get; set; } = null!; // required
 		public SkillCategory? Category { get; set; }
-		public string? Description { get; set; }
 
 		#region Relations
 		#region Exam Relation
@@ -35,6 +36,8 @@ namespace Domain.Entities
 		#region PhaseProvidedSkills relations
 		public ICollection<PhaseProvidedSkills> PhaseProvidedSkills { get; set; } = new HashSet<PhaseProvidedSkills>();
 		#endregion
+
+		public ICollection<UserAcquiredSkills> UserAcquiredSkills { get; set; } = new HashSet<UserAcquiredSkills>();
 		#endregion
 	}
 }

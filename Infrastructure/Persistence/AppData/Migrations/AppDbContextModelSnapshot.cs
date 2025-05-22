@@ -24,18 +24,30 @@ namespace Persistence.AppData.Migrations
 
             modelBuilder.Entity("Domain.Entities.Course", b =>
                 {
-                    b.Property<int>("CourseId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CourseId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CourseUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("DifficultyLevel")
                         .IsRequired()
@@ -44,9 +56,13 @@ namespace Persistence.AppData.Migrations
                     b.Property<TimeOnly>("Duration")
                         .HasColumnType("time");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("PhaseId")
                         .HasColumnType("int");
@@ -57,7 +73,13 @@ namespace Persistence.AppData.Migrations
                     b.Property<string>("ProviderName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("CourseId");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("PhaseId");
 
@@ -72,8 +94,21 @@ namespace Persistence.AppData.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<int>("DurationInMinutes")
                         .HasColumnType("int");
@@ -84,22 +119,30 @@ namespace Persistence.AppData.Migrations
                     b.Property<decimal>("ExamScore")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("MaxAttemptCount")
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MaxAttempts")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<decimal>("PassingScore")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("UserEnteredExamsUserEmail")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("PhaseId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserEnteredExamsUserEmail");
 
                     b.ToTable("Exams");
                 });
@@ -116,9 +159,21 @@ namespace Persistence.AppData.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("EmploymentType")
                         .IsRequired()
@@ -127,25 +182,27 @@ namespace Persistence.AppData.Migrations
                     b.Property<DateTime?>("ExpiresAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<decimal>("MaxSalary")
                         .HasColumnType("decimal(10,2)");
 
                     b.Property<decimal>("MinSalary")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<DateTime>("PostedAt")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
+                    b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserAppliedJobsUserEmail")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserAppliedJobsUserEmail");
 
                     b.ToTable("Jobs", t =>
                         {
@@ -196,40 +253,109 @@ namespace Persistence.AppData.Migrations
 
             modelBuilder.Entity("Domain.Entities.JoinEntities.UserAcquiredSkills", b =>
                 {
-                    b.Property<string>("UserEmail")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTimeOffset>("AcquiredAt")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Level")
                         .HasColumnType("int");
 
-                    b.HasKey("UserEmail");
+                    b.Property<int>("SkillId")
+                        .HasColumnType("int");
 
-                    b.ToTable("UserAcquiredSkills");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SkillId");
+
+                    b.ToTable("UserSkills");
                 });
 
             modelBuilder.Entity("Domain.Entities.JoinEntities.UserAppliedJobs", b =>
                 {
-                    b.Property<string>("UserEmail")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ApplicationStatusStatus")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("AppliedAt")
+                    b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("UserEmail");
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("UserAppliedJobs");
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("JobId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JobId");
+
+                    b.ToTable("UserJobs");
                 });
 
             modelBuilder.Entity("Domain.Entities.JoinEntities.UserEnrolledTracks", b =>
                 {
-                    b.Property<string>("UserEmail")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("EnrollmentStatus")
                         .HasColumnType("int");
@@ -237,27 +363,61 @@ namespace Persistence.AppData.Migrations
                     b.Property<DateTimeOffset?>("FinishedAt")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsFinished")
                         .HasColumnType("bit");
 
-                    b.Property<DateTimeOffset>("StartedAt")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<int>("TrackId")
+                        .HasColumnType("int");
 
-                    b.HasKey("UserEmail");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
-                    b.ToTable("UserEnrolledTracks");
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrackId");
+
+                    b.ToTable("UserTracks");
                 });
 
-            modelBuilder.Entity("Domain.Entities.JoinEntities.UserEnteredExams", b =>
+            modelBuilder.Entity("Domain.Entities.JoinEntities.UserEnteredExam", b =>
                 {
-                    b.Property<string>("UserEmail")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AttemptCount")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ExamsId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("FinishedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsPassed")
                         .HasColumnType("bit");
@@ -268,18 +428,33 @@ namespace Persistence.AppData.Migrations
                     b.Property<decimal>("Score")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("StartedAt")
+                    b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("UserEmail");
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("UserEnteredExams");
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExamsId");
+
+                    b.HasIndex("UserEmail")
+                        .IsUnique();
+
+                    b.ToTable("UserExams");
                 });
 
             modelBuilder.Entity("Domain.Entities.JoinEntities.UserPassedPhases", b =>
                 {
-                    b.Property<string>("UserEmail")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("TrackId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PhaseId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("FinishedAt")
                         .HasColumnType("datetime2");
@@ -287,12 +462,15 @@ namespace Persistence.AppData.Migrations
                     b.Property<bool>("IsPassed")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("StartedAt")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserEmail");
+                    b.HasKey("TrackId", "PhaseId");
 
-                    b.ToTable("UserPassedPhases");
+                    b.HasIndex("PhaseId");
+
+                    b.ToTable("UserPhases");
                 });
 
             modelBuilder.Entity("Domain.Entities.Phase", b =>
@@ -303,8 +481,21 @@ namespace Persistence.AppData.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<TimeOnly>("EstimatedDuration")
                         .HasColumnType("time");
@@ -312,15 +503,22 @@ namespace Persistence.AppData.Migrations
                     b.Property<int>("ExamId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("TrackId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserPassedPhasesUserEmail")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -328,8 +526,6 @@ namespace Persistence.AppData.Migrations
                         .IsUnique();
 
                     b.HasIndex("TrackId");
-
-                    b.HasIndex("UserPassedPhasesUserEmail");
 
                     b.ToTable("Phases");
                 });
@@ -348,18 +544,38 @@ namespace Persistence.AppData.Migrations
                     b.Property<int>("CourseID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Description")
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<int>("ExamID")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
-                    b.Property<string>("UserAcquiredSkillsUserEmail")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -367,22 +583,32 @@ namespace Persistence.AppData.Migrations
 
                     b.HasIndex("ExamID");
 
-                    b.HasIndex("UserAcquiredSkillsUserEmail");
-
                     b.ToTable("Skills");
                 });
 
             modelBuilder.Entity("Domain.Entities.Track", b =>
                 {
-                    b.Property<int>("TrackId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TrackId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("DifficultyLevel")
                         .IsRequired()
@@ -391,16 +617,21 @@ namespace Persistence.AppData.Migrations
                     b.Property<TimeOnly>("EstimatedDuration")
                         .HasColumnType("time");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserEnrolledTracksUserEmail")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("TrackId");
-
-                    b.HasIndex("UserEnrolledTracksUserEmail");
+                    b.HasKey("Id");
 
                     b.ToTable("Tracks");
                 });
@@ -412,11 +643,13 @@ namespace Persistence.AppData.Migrations
 
                     b.Property<string>("PrerequisiteDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("PrerequisiteName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.HasKey("TrackId");
 
@@ -434,19 +667,8 @@ namespace Persistence.AppData.Migrations
                     b.Navigation("Phase");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Exam", b =>
-                {
-                    b.HasOne("Domain.Entities.JoinEntities.UserEnteredExams", null)
-                        .WithMany("Exams")
-                        .HasForeignKey("UserEnteredExamsUserEmail");
-                });
-
             modelBuilder.Entity("Domain.Entities.Job", b =>
                 {
-                    b.HasOne("Domain.Entities.JoinEntities.UserAppliedJobs", null)
-                        .WithMany("Jobs")
-                        .HasForeignKey("UserAppliedJobsUserEmail");
-
                     b.OwnsOne("Domain.Entities.Common.Address", "Location", b1 =>
                         {
                             b1.Property<int>("JobId")
@@ -514,6 +736,69 @@ namespace Persistence.AppData.Migrations
                     b.Navigation("Skill");
                 });
 
+            modelBuilder.Entity("Domain.Entities.JoinEntities.UserAcquiredSkills", b =>
+                {
+                    b.HasOne("Domain.Entities.Skill", "Skill")
+                        .WithMany("UserAcquiredSkills")
+                        .HasForeignKey("SkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Skill");
+                });
+
+            modelBuilder.Entity("Domain.Entities.JoinEntities.UserAppliedJobs", b =>
+                {
+                    b.HasOne("Domain.Entities.Job", "Job")
+                        .WithMany("UserAppliedJobs")
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Job");
+                });
+
+            modelBuilder.Entity("Domain.Entities.JoinEntities.UserEnrolledTracks", b =>
+                {
+                    b.HasOne("Domain.Entities.Track", "Track")
+                        .WithMany("UserEnrolledTracks")
+                        .HasForeignKey("TrackId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Track");
+                });
+
+            modelBuilder.Entity("Domain.Entities.JoinEntities.UserEnteredExam", b =>
+                {
+                    b.HasOne("Domain.Entities.Exam", "Exams")
+                        .WithMany("UserEnteredExams")
+                        .HasForeignKey("ExamsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Exams");
+                });
+
+            modelBuilder.Entity("Domain.Entities.JoinEntities.UserPassedPhases", b =>
+                {
+                    b.HasOne("Domain.Entities.Phase", "Phase")
+                        .WithMany("UserPassedPhases")
+                        .HasForeignKey("PhaseId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Track", "Track")
+                        .WithMany("UserPassedPhases")
+                        .HasForeignKey("TrackId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Phase");
+
+                    b.Navigation("Track");
+                });
+
             modelBuilder.Entity("Domain.Entities.Phase", b =>
                 {
                     b.HasOne("Domain.Entities.Exam", "Exam")
@@ -527,10 +812,6 @@ namespace Persistence.AppData.Migrations
                         .HasForeignKey("TrackId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Domain.Entities.JoinEntities.UserPassedPhases", null)
-                        .WithMany("Phases")
-                        .HasForeignKey("UserPassedPhasesUserEmail");
 
                     b.Navigation("Exam");
 
@@ -551,20 +832,9 @@ namespace Persistence.AppData.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.JoinEntities.UserAcquiredSkills", null)
-                        .WithMany("Skills")
-                        .HasForeignKey("UserAcquiredSkillsUserEmail");
-
                     b.Navigation("Course");
 
                     b.Navigation("Exam");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Track", b =>
-                {
-                    b.HasOne("Domain.Entities.JoinEntities.UserEnrolledTracks", null)
-                        .WithMany("Tracks")
-                        .HasForeignKey("UserEnrolledTracksUserEmail");
                 });
 
             modelBuilder.Entity("Domain.Entities.TrackPrerequisites", b =>
@@ -589,36 +859,15 @@ namespace Persistence.AppData.Migrations
                         .IsRequired();
 
                     b.Navigation("Skills");
+
+                    b.Navigation("UserEnteredExams");
                 });
 
             modelBuilder.Entity("Domain.Entities.Job", b =>
                 {
                     b.Navigation("JobRequiredSkills");
-                });
 
-            modelBuilder.Entity("Domain.Entities.JoinEntities.UserAcquiredSkills", b =>
-                {
-                    b.Navigation("Skills");
-                });
-
-            modelBuilder.Entity("Domain.Entities.JoinEntities.UserAppliedJobs", b =>
-                {
-                    b.Navigation("Jobs");
-                });
-
-            modelBuilder.Entity("Domain.Entities.JoinEntities.UserEnrolledTracks", b =>
-                {
-                    b.Navigation("Tracks");
-                });
-
-            modelBuilder.Entity("Domain.Entities.JoinEntities.UserEnteredExams", b =>
-                {
-                    b.Navigation("Exams");
-                });
-
-            modelBuilder.Entity("Domain.Entities.JoinEntities.UserPassedPhases", b =>
-                {
-                    b.Navigation("Phases");
+                    b.Navigation("UserAppliedJobs");
                 });
 
             modelBuilder.Entity("Domain.Entities.Phase", b =>
@@ -626,6 +875,8 @@ namespace Persistence.AppData.Migrations
                     b.Navigation("Courses");
 
                     b.Navigation("PhaseProvidedSkills");
+
+                    b.Navigation("UserPassedPhases");
                 });
 
             modelBuilder.Entity("Domain.Entities.Skill", b =>
@@ -633,6 +884,8 @@ namespace Persistence.AppData.Migrations
                     b.Navigation("JobRequiredSkills");
 
                     b.Navigation("PhaseProvidedSkills");
+
+                    b.Navigation("UserAcquiredSkills");
                 });
 
             modelBuilder.Entity("Domain.Entities.Track", b =>
@@ -640,6 +893,10 @@ namespace Persistence.AppData.Migrations
                     b.Navigation("Phases");
 
                     b.Navigation("TrackPrerequisites");
+
+                    b.Navigation("UserEnrolledTracks");
+
+                    b.Navigation("UserPassedPhases");
                 });
 #pragma warning restore 612, 618
         }

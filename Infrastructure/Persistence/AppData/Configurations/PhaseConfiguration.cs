@@ -13,6 +13,8 @@ namespace Persistence.AppData.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Phase> builder)
 		{
+			builder.HasKey(x => x.Id);// for PK
+
 			builder.HasOne(t => t.Exam)
 				.WithOne(t => t.Phase)
 				.HasForeignKey<Phase>(e => e.ExamId)
@@ -21,8 +23,6 @@ namespace Persistence.AppData.Configurations
 			builder.HasMany(x => x.Courses)
 				.WithOne(x => x.Phase)
 				.HasForeignKey(x => x.PhaseId);
-
-
 		}
 	}
 }

@@ -9,15 +9,13 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class UserAcquiredSkills
+	public class UserAcquiredSkills : UserBaseEntity
 	{
-		[Key]
-		public string UserEmail { get; set; } = null!;
-		public DateTimeOffset AcquiredAt { get; set; } = DateTimeOffset.Now;
 		public Proficiency Level { get; set; }
 
 		#region Relations
-		public ICollection<Skill> Skills { get; set; } = new HashSet<Skill>();
+		public int SkillId { get; set; } 
+		public Skill Skill { get; set; } = default!;
 		#endregion
 	}
 }

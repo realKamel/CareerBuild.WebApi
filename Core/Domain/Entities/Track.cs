@@ -9,17 +9,28 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-	public class Track
+	public class Track : BaseEntity<int>
 	{
-		[Key]
-		public int TrackId { get; set; }
+		[MaxLength(250, ErrorMessage = "Maximum length is {250}")]
 		public string Name { get; set; } = null!; // required
-		public string Description { get; set; } = null!; // required
+
+		[MaxLength(1000, ErrorMessage = "Maximum length is {1000}")]
+		public string? Description { get; set; } = null!; // required
 		public TimeOnly EstimatedDuration { get; set; }
 		public DifficultyLevel DifficultyLevel { get; set; }
+
+
 		#region Relations
+
 		public ICollection<TrackPrerequisites>? TrackPrerequisites { get; set; }
+			= new HashSet<TrackPrerequisites>();
+
 		public ICollection<Phase> Phases { get; set; } = new HashSet<Phase>();
+
+		public ICollection<UserPassedPhases> UserPassedPhases = new HashSet<UserPassedPhases>();
+
+		public ICollection<UserEnrolledTracks> UserEnrolledTracks = new HashSet<UserEnrolledTracks>();
+
 		#endregion
 	}
 }

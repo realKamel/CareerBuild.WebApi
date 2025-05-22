@@ -1,19 +1,21 @@
 ﻿using Domain.Entities.JoinEntities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-	public class Phase
+	public class Phase : BaseEntity<int>
 	{
-		public int Id { get; set; }
-		public string Name { get; set; } = default!;
-		public string? Description { get; set; }
-		public TimeOnly EstimatedDuration { get; set; }
+		[MaxLength(250, ErrorMessage = "Maximum length is {250}")]
+		public string Name { get; set; } = null!; // required
 
+		[MaxLength(1000, ErrorMessage = "Maximum length is {1000}")]
+		public string? Description { get; set; } = null!; // required
+		public TimeOnly EstimatedDuration { get; set; }
 
 		#region Relations
 		#region Track relation
@@ -33,6 +35,8 @@ namespace Domain.Entities
 		#region PhaseProvidedSkills
 		public ICollection<PhaseProvidedSkills> PhaseProvidedSkills { get; set; } = new HashSet<PhaseProvidedSkills>();
 		#endregion
+
+		public ICollection<UserPassedPhases> UserPassedPhases { get; set; } = new HashSet<UserPassedPhases>();
 		#endregion
 	}
 }
