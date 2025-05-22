@@ -8,11 +8,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class UserPassedPhases
+	public class UserPassedPhases : BaseEntity<Guid>
 	{
-		[Key]
 		public string UserEmail { get; set; } = default!;
-		public DateTime StartedAt { get; set; } = DateTime.UtcNow;
 		public DateTime? FinishedAt { get; set; } = null;
 		public bool IsPassed { get; set; } = false;
 

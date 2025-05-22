@@ -3,6 +3,7 @@ using Domain.Entities.IdentityModule;
 using Domain.Entities.JoinEntities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -10,13 +11,14 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-	public class Job
+	public class Job : BaseEntity<int>
 	{
-		public int Id { get; set; }
-		public string Title { get; set; } = null!;
-		public string Description { get; set; } = null!;
+		[MaxLength(250, ErrorMessage = "Maximum length is {250}")]
+		public string Name { get; set; } = null!; // required
+
+		[MaxLength(1000, ErrorMessage = "Maximum length is {1000}")]
+		public string? Description { get; set; } = null!; // required
 		public Address Location { get; set; } = null!;
-		public DateTime PostedAt { get; set; }
 		public DateTime? ExpiresAt { get; set; } // this is optional
 		public EmploymentType EmploymentType { get; set; }
 

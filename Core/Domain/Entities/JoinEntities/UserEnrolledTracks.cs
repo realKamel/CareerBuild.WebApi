@@ -9,11 +9,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class UserEnrolledTracks
+	public class UserEnrolledTracks : BaseEntity<Guid>
 	{
-		[Key]
-		public string UserEmail { get; set; } = default!;
-		public DateTimeOffset StartedAt { get; set; } = DateTime.Now;
+		public string UserEmail { get; set; } = null!;
 		public DateTimeOffset? FinishedAt { get; set; } = null;
 		public bool IsFinished { get; set; } = false;
 		public EnrollmentStatus EnrollmentStatus { get; set; }

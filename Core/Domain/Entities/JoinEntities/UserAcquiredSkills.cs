@@ -9,11 +9,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class UserAcquiredSkills
+	public class UserAcquiredSkills : BaseEntity<Guid>
 	{
-		[Key]
-		public string UserEmail { get; set; } = null!;
-		public DateTimeOffset AcquiredAt { get; set; } = DateTimeOffset.Now;
+		public string UserEmail { get; set; } = default!;
 		public Proficiency Level { get; set; }
 
 		#region Relations

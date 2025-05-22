@@ -14,6 +14,8 @@ namespace Persistence.AppData.Configurations
 	{
 		public void Configure(EntityTypeBuilder<Skill> builder)
 		{
+			builder.HasKey(x => x.Id);// for PK
+
 			builder.HasOne(e => e.Exam).WithMany(x => x.Skills)
 				.HasForeignKey(e => e.ExamID);
 

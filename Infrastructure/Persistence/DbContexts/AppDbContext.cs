@@ -22,11 +22,11 @@ namespace Persistence.DbContexts
 		public DbSet<Phase> Phases { get; set; }
 		public DbSet<Skill> Skills { get; set; }
 		public DbSet<Track> Tracks { get; set; }
-		public DbSet<UserAcquiredSkills> UserAcquiredSkills { get; set; }
-		public DbSet<UserAppliedJobs> UserAppliedJobs { get; set; }
-		public DbSet<UserEnrolledTracks> UserEnrolledTracks { get; set; }
-		public DbSet<UserEnteredExams> UserEnteredExams { get; set; }
-		public DbSet<UserPassedPhases> UserPassedPhases { get; set; }
+		public DbSet<UserAcquiredSkills> UserSkills { get; set; }
+		public DbSet<UserAppliedJobs> UserJobs { get; set; }
+		public DbSet<UserEnrolledTracks> UserTracks { get; set; }
+		public DbSet<UserEnteredExams> UserExams { get; set; }
+		public DbSet<UserPassedPhases> UserPhases { get; set; }
 
 		#endregion
 
@@ -37,8 +37,6 @@ namespace Persistence.DbContexts
 
 			//to Apply Configurations From Assembly
 			modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
-
-			//modelBuilder.ApplyConfiguration(new JobRequiredSkillsConfiguration());
 		}
 	}
 }
