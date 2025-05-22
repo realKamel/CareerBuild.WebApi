@@ -27,6 +27,10 @@ namespace Domain.Entities
 
 		public ICollection<Phase> Phases { get; set; } = new HashSet<Phase>();
 
+		public ICollection<UserPassedPhases> UserPassedPhases = new HashSet<UserPassedPhases>();
+
+		public ICollection<UserEnrolledTracks> UserEnrolledTracks = new HashSet<UserEnrolledTracks>();
+
 		#endregion
 	}
 }

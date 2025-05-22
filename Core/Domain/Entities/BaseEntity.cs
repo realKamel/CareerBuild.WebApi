@@ -9,8 +9,8 @@ namespace Domain.Entities
 {
 	public class BaseEntity<TKey> 
 	{
-		[Key] 
-		public TKey Id { get; }
+		[Key]
+		public TKey Id { get; set; }
 		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 		public bool IsDeleted { get; set; } = false;
 		public string? DeletedBy { get; set; } = null;

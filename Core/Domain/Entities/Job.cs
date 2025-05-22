@@ -30,6 +30,8 @@ namespace Domain.Entities
 
 		#region Relations
 		public ICollection<JobRequiredSkills> JobRequiredSkills { get; set; } = new HashSet<JobRequiredSkills>();
+
+		public ICollection<UserAppliedJobs> UserAppliedJobs { get; set; } = new HashSet<UserAppliedJobs>();
 		#endregion
 	}
 }

@@ -36,6 +36,8 @@ namespace Domain.Entities
 		#region PhaseProvidedSkills relations
 		public ICollection<PhaseProvidedSkills> PhaseProvidedSkills { get; set; } = new HashSet<PhaseProvidedSkills>();
 		#endregion
+
+		public ICollection<UserAcquiredSkills> UserAcquiredSkills { get; set; } = new HashSet<UserAcquiredSkills>();
 		#endregion
 	}
 }
