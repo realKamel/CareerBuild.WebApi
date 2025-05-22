@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class UserEnrolledTracks : BaseEntity<Guid>
+	public class UserEnrolledTracks : UserBaseEntity
 	{
-		public string UserEmail { get; set; } = null!;
 		public DateTimeOffset? FinishedAt { get; set; } = null;
 		public bool IsFinished { get; set; } = false;
 		public EnrollmentStatus EnrollmentStatus { get; set; }
 		#region Relations
-		public ICollection<Track> Tracks { get; set; } = new HashSet<Track>();
+		public int TrackId { get; set; }
+		public Track Track { get; set; } = default!;
 		#endregion
 	}
 }

@@ -8,14 +8,19 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class UserPassedPhases : BaseEntity<Guid>
+	public class UserPassedPhases
 	{
 		public string UserEmail { get; set; } = default!;
+
 		public DateTime? FinishedAt { get; set; } = null;
 		public bool IsPassed { get; set; } = false;
 
 		#region Relations
-		public ICollection<Phase> Phases { get; set; } = new HashSet<Phase>();
+		public int TrackId { get; set; }
+		public Track Track { get; set; } = default!;
+
+		public int PhaseId { get; set; }
+		public Phase Phase { get; set; } = default!;
 		#endregion
 	}
 }

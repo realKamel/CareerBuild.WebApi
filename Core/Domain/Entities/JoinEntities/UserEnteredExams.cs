@@ -8,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class UserEnteredExam : BaseEntity<Guid>
+	public class UserEnteredExam : UserBaseEntity
 	{
-		public string UserEmail { get; set; } = null!;
 		public int AttemptCount { get; set; } = 1;
 		public DateTime? LastAttemptDate { get; set; } = null;
 		public DateTime? FinishedAt { get; set; } = null;
