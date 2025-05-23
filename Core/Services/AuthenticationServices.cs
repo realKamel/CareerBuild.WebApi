@@ -18,9 +18,10 @@ namespace Services
 		UserManager<AppUser> _userManager,
 		IMapper _mapper,
 		IConfiguration Configuration)
-		 : IAuthenticationServices
+		: IAuthenticationServices
 	{
 		#region Helper Methods
+
 		private async Task<string> CreateTokenAsync(AppUser user)
 		{
 			// Collect user claims
@@ -57,7 +58,8 @@ namespace Services
 
 			return new JwtSecurityTokenHandler().WriteToken(token);
 		}
-		public async Task<bool> RegisterAsync<TEntity, TRegister>(TEntity entity, TRegister registerDto)
+
+		private async Task<bool> RegisterAsync<TEntity, TRegister>(TEntity entity, TRegister registerDto)
 			where TEntity : AppUser
 			where TRegister : RegisterBaseDto
 		{
@@ -70,15 +72,15 @@ namespace Services
 					.Select(e => e.Description).ToList();
 				throw new BadRequestException(errors);
 			}
+
 			return result.Succeeded;
 		}
-		public async Task<TLoggedIn> LoginHelper<TEntity, TLoggedIn>(LoginDto loginDto)
+
+		private async Task<TLoggedIn> LoginHelper<TEntity, TLoggedIn>(LoginDto loginDto)
 			where TEntity : AppUser
 			where TLoggedIn : LoggedInBase
 		{
-			//TEntity? user = await _userManager.FindByEmailAsync("ali@gmail.com") as TEntity;
-			var user = await _userManager.FindByEmailAsync("ali@gmail.com");
-
+			TEntity? user = await _userManager.FindByEmailAsync(loginDto.Email) as TEntity;
 
 			if (user == null)
 			{
@@ -86,7 +88,7 @@ namespace Services
 			}
 
 			var validPassword = await _userManager
-				.CheckPasswordAsync(user!, loginDto.Password);
+				.CheckPasswordAsync(user, loginDto.Password);
 
 			if (!validPassword)
 			{
@@ -98,7 +100,9 @@ namespace Services
 
 			return result;
 		}
+
 		#endregion
+
 		public async Task<LoggedInUserDto> LoginRegularUserAsync(LoginDto loginDto)
 		{
 			return await LoginHelper<RegularUser, LoggedInUserDto>(loginDto);
@@ -146,8 +150,8 @@ namespace Services
 					.Select(e => e.Description).ToList();
 				throw new BadRequestException(errors);
 			}
-			return result.Succeeded;
 
+			return result.Succeeded;
 		}
 
 		public async Task<bool> UpdatePassword(string? email, string currentPassword, string newPassword)
@@ -174,6 +178,7 @@ namespace Services
 					.Select(e => e.Description).ToList();
 				throw new BadRequestException(errors);
 			}
+
 			return result.Succeeded;
 		}
 	}

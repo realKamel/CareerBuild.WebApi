@@ -46,6 +46,7 @@ namespace Presentation.Controllers
 				.RegisterCompanyUserAsync(userDto);
 			return Ok(result);
 		}
+
 		[Authorize]
 		[HttpDelete("DeleteUser")]
 		public async Task<ActionResult<bool>> DeleteUser()

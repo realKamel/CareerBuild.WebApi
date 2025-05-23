@@ -19,13 +19,12 @@ namespace Persistence.AppData.Configurations.JoinEntitiesConfigurations
 			builder.HasOne(x => x.Phase)
 				.WithMany(x => x.PhaseSkills)
 				.HasForeignKey(x => x.PhaseId)
-				.OnDelete(DeleteBehavior.NoAction);
+				.OnDelete(DeleteBehavior.Cascade);
 
 			builder.HasOne(x => x.Skill)
 				.WithMany(x => x.PhaseSkills)
 				.HasForeignKey(x => x.SkillId)
-				.OnDelete(DeleteBehavior.NoAction);
+				.OnDelete(DeleteBehavior.Cascade);
 		}
 	}
-
 }

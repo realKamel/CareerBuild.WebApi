@@ -7,6 +7,7 @@ using Persistence;
 using Persistence.DbContexts;
 //using Persistence.Repositories;
 using Services;
+
 namespace CareerBuild.Web
 {
 	public class Program
@@ -14,19 +15,20 @@ namespace CareerBuild.Web
 		public static async Task Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
-			
+
 
 			#region DI Services Container
+
 			// Add services to the container.
 
-			builder.Services.AddControllers(); // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+			builder.Services
+				.AddControllers(); // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 			builder.Services.AddSwaggerServices(); // web
 
 			builder.Services.AddIdentityServices(builder.Configuration); //persistence layer
 
 			builder.Services.AddAppCoreService(); //service layer
-
 
 			#endregion
 
@@ -42,11 +44,12 @@ namespace CareerBuild.Web
 			}
 
 			#region Middlewares
+
 			// Configure the HTTP request pipeline.
 
 			app.UseCustomExceptionMiddleware(); // to enable exceptions
 
-			app.UseSwaggerMiddleware();//to enable swagger in development
+			app.UseSwaggerMiddleware(); //to enable swagger in development
 
 			app.UseHttpsRedirection(); // to enable https
 

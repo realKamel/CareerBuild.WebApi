@@ -13,6 +13,7 @@ namespace Persistence.Repositories
 	{
 		//Dictionary for the created Repos
 		private Dictionary<string, object> _repositories = [];
+
 		public IGenericRepository<TEntity, TKey> GetRepository<TEntity, TKey>() where TEntity : BaseEntity<TKey>
 		{
 			//get type name 
@@ -24,11 +25,11 @@ namespace Persistence.Repositories
 			else
 			{
 				//1. Create object 
-				var newTypeOjbect = new GenericRepository<TEntity, TKey>(_dbContext);
+				var newTypeObject = new GenericRepository<TEntity, TKey>(_dbContext);
 				//2. Store in Dictionary
-				_repositories[typeof(TEntity).Name] = newTypeOjbect;
+				_repositories[typeof(TEntity).Name] = newTypeObject;
 				//3. return the new object
-				return newTypeOjbect;
+				return newTypeObject;
 			}
 		}
 

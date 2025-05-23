@@ -9,5 +9,6 @@ namespace AbstractServices
 	public interface IServiceManager
 	{
 		public IAuthenticationServices AuthenticationServices { get; }
+		public ITrackServices TrackServices { get; }
 	}
 }
