@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace Persistence.Repositories
 {
 	public class GenericRepository<TEntity, TKey>(AppDbContext _dbContext)
-		: IGenericRepository<TEntity, TKey> where TEntity : BaseEntity<TKey>
+        : IGenericRepository<TEntity, TKey> where TEntity : BaseEntity<TKey>
 	{
 		public async Task AddAsync(TEntity entity)
 		{
@@ -23,12 +23,15 @@ namespace Persistence.Repositories
 			return await _dbContext.Set<TEntity>().ToListAsync();
 		}
 
-		public async Task<TEntity?> GetByIdAsync(TKey id)
+
+
+        public async Task<TEntity?> GetByIdAsync(TKey id)
 		{
 			return await _dbContext.Set<TEntity>().FindAsync(id);
 		}
 
-		public void Remove(TEntity entity)
+
+        public void Remove(TEntity entity)
 		{
 			_dbContext.Set<TEntity>().Remove(entity);
 		}
@@ -37,5 +40,16 @@ namespace Persistence.Repositories
 		{
 			_dbContext.Set<TEntity>().Update(entity);
 		}
-	}
+
+        #region Spicification
+        public async Task<IEnumerable<TEntity>> GetAllAsync(ISpecification<TEntity, TKey> specification)
+        {
+            return await QueryCreate.CreateQuery(_dbContext.Set<TEntity>(), specification).ToListAsync();
+        }
+        public async Task<TEntity?> GetByIdAsync(ISpecification<TEntity, TKey> specification)
+        {
+            return await QueryCreate.CreateQuery(_dbContext.Set<TEntity>(), specification).FirstOrDefaultAsync();
+        }
+        #endregion
+    }
 }

@@ -14,6 +14,11 @@ namespace Domain.Interfaces
 		void Remove(TEntity entity);
 		Task<TEntity?> GetByIdAsync(TKey id);
 		Task<IEnumerable<TEntity>> GetAllAsync();
-	}
+
+        #region Specification
+        Task<TEntity?> GetByIdAsync(ISpecification<TEntity,TKey> specification);
+        Task<IEnumerable<TEntity>> GetAllAsync(ISpecification<TEntity, TKey> specification);
+        #endregion
+    }
 
 }

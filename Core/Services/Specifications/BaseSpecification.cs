@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
+using Domain.Entities;
+using Domain.Interfaces;
+
+namespace Services.Specifications
+{
+    abstract public class BaseSpecification<TEntity, TKey> : ISpecification<TEntity, TKey> where TEntity 
+        : BaseEntity<TKey>
+    {
+        #region Where
+        protected BaseSpecification(Expression<Func<TEntity, bool>>? CriteriaExp)
+        {
+            Criteria = CriteriaExp;
+
+        }
+        public Expression<Func<TEntity, bool>>? Criteria { get; private set; }
+        #endregion
+
+        #region Include
+        public List<Expression<Func<TEntity, object>>> IncludeExp { get; } = [];
+
+
+        protected void AddInclude(Expression<Func<TEntity, object>> includeExp)
+        =>IncludeExp.Add(includeExp);
+        
+        #endregion
+
+        #region OrderBy
+        public Expression<Func<TEntity, object>> OrderBy { get; private set; }
+
+        public Expression<Func<TEntity, object>> OrderByDecs { get; private set; }
+
+
+        protected void AddOrderBy(Expression<Func<TEntity, object>> OrderByexpression) => OrderBy = OrderByexpression;
+        protected void AddOrderByDecs(Expression<Func<TEntity, object>> OrderByDecsexpression) => OrderByDecs = OrderByDecsexpression;
+
+        #endregion
+
+    }
+}

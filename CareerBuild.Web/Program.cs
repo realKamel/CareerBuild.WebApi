@@ -56,7 +56,9 @@ namespace CareerBuild.Web
 
 			app.UseAuthentication(); // if we have login
 
-			app.UseAuthorization(); // if we have role 
+            app.UseCors("AllowAngularDevClient");// to enable request from Angular Project
+
+            app.UseAuthorization(); // if we have role 
 
 			app.MapControllers(); // maps api controllers
 
