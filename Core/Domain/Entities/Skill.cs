@@ -20,24 +20,24 @@ namespace Domain.Entities
 
 		#region Relations
 		#region Exam Relation
-		public int ExamID { get; set; }
-		public Exam Exam { get; set; } = default!;
+		public int? ExamID { get; set; }
+		public Exam? Exam { get; set; } = default!;
 		#endregion
 
 		#region Course Relation
-		public int CourseID { get; set; }
-		public Course Course { get; set; } = default!;
+		public int? CourseID { get; set; }
+		public Course? Course { get; set; } = default!;
 		#endregion
 
 		#region JobRequiredSkills relations
-		public ICollection<JobRequiredSkills> JobRequiredSkills { get; set; } = new HashSet<JobRequiredSkills>();
+		public ICollection<JobSkills>? JobSkills { get; set; } = new HashSet<JobSkills>();
 		#endregion
 
 		#region PhaseProvidedSkills relations
-		public ICollection<PhaseProvidedSkills> PhaseProvidedSkills { get; set; } = new HashSet<PhaseProvidedSkills>();
+		public ICollection<PhaseSkills>? PhaseSkills { get; set; } = new HashSet<PhaseSkills>();
 		#endregion
 
-		public ICollection<UserAcquiredSkills> UserAcquiredSkills { get; set; } = new HashSet<UserAcquiredSkills>();
+		public ICollection<UserSkills>? UserSkills { get; set; } = new HashSet<UserSkills>();
 		#endregion
 	}
 }

@@ -8,6 +8,7 @@ using Persistence.DbContexts;
 using Serilog;
 //using Persistence.Repositories;
 using Services;
+
 namespace CareerBuild.Web
 {
 	public class Program
@@ -18,6 +19,7 @@ namespace CareerBuild.Web
 
 
 			#region DI Services Container
+
 			// Add services to the container.
 			Log.Logger = new LoggerConfiguration()
 								.ReadFrom.Configuration( builder.Configuration )
@@ -37,15 +39,7 @@ namespace CareerBuild.Web
 
 			builder.Services.AddAppCoreService(); //service layer
 
-
 			#endregion
-
-			Log.Logger =
-				new LoggerConfiguration()
-					.MinimumLevel.Debug()
-					.WriteTo.Console()
-					.CreateLogger();
-
 
 			var app = builder.Build();
 
@@ -60,12 +54,13 @@ namespace CareerBuild.Web
 			}
 
 			#region Middlewares
+
 			// Configure the HTTP request pipeline.
 			app.UseSerilogRequestLogging();
 
 			app.UseCustomExceptionMiddleware(); // to enable exceptions
 
-			app.UseSwaggerMiddleware();//to enable swagger in development
+			app.UseSwaggerMiddleware(); //to enable swagger in development
 
 			app.UseHttpsRedirection(); // to enable https
 

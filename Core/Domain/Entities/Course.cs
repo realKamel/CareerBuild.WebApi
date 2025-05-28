@@ -18,18 +18,18 @@ namespace Domain.Entities
 		public string? Description { get; set; } = null!; // required
 		public decimal Price { get; set; }
 		public string? CourseUrl { get; set; } // optional
-		public TimeOnly Duration { get; set; }
+		public int DurationInHours { get; set; }
 		public string? ProviderName { get; set; }
 		public DifficultyLevel DifficultyLevel { get; set; }
 
 		#region Relations
 		#region Skills
-		public ICollection<Skill> Skills { get; set; } = new HashSet<Skill>();
+		public ICollection<Skill>? Skills { get; set; } = new HashSet<Skill>();
 		#endregion
 
 		#region Phase Relation
-		public int PhaseId { get; set; }
-		public Phase Phase { get; set; } = default!;
+		public int? PhaseId { get; set; }
+		public Phase? Phase { get; set; } = default!;
 		#endregion
 
 		#endregion

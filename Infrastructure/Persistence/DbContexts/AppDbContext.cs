@@ -16,17 +16,17 @@ namespace Persistence.DbContexts
 		// public DbSet<YourEntity> YourEntities { get; set; }
 
 		#region DbSets
-		public DbSet<Course> Course { get; set; }
+		public DbSet<Course> Courses { get; set; }
 		public DbSet<Exam> Exams { get; set; }
 		public DbSet<Job> Jobs { get; set; }
 		public DbSet<Phase> Phases { get; set; }
 		public DbSet<Skill> Skills { get; set; }
 		public DbSet<Track> Tracks { get; set; }
-		public DbSet<UserAcquiredSkills> UserSkills { get; set; }
-		public DbSet<UserAppliedJobs> UserJobs { get; set; }
-		public DbSet<UserEnrolledTracks> UserTracks { get; set; }
-		public DbSet<UserEnteredExam> UserExams { get; set; }
-		public DbSet<UserPassedPhases> UserPhases { get; set; }
+		public DbSet<UserSkills> UserSkills { get; set; }
+		public DbSet<UserJobs> UserJobs { get; set; }
+		public DbSet<UserTracks> UserTracks { get; set; }
+		public DbSet<UserExam> UserExams { get; set; }
+		public DbSet<UserPhases> UserPhases { get; set; }
 
 		#endregion
 

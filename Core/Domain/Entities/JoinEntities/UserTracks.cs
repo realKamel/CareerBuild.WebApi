@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class UserEnrolledTracks : UserBaseEntity
+	public class UserTracks : UserBaseEntity
 	{
 		public DateTimeOffset? FinishedAt { get; set; } = null;
 		public bool IsFinished { get; set; } = false;

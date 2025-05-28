@@ -9,10 +9,13 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities.JoinEntities
 {
-	public class UserAppliedJobs : UserBaseEntity
+	public class UserSkills : UserBaseEntity
 	{
-		public int JobId { get; set; }
-		public Job Job { get; set; } = default!;
-		public ApplicationStatus ApplicationStatusStatus { get; set; }
+		public Proficiency Level { get; set; }
+
+		#region Relations
+		public int SkillId { get; set; } 
+		public Skill Skill { get; set; } = default!;
+		#endregion
 	}
 }

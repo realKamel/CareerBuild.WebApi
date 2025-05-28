@@ -10,14 +10,14 @@ using System.Threading.Tasks;
 
 namespace Persistence.AppData.Configurations.JoinEntitiesConfigurations
 {
-	internal class UserEnrolledTracksConfigurations : IEntityTypeConfiguration<UserEnrolledTracks>
+	internal class UserTracksConfigurations : IEntityTypeConfiguration<UserTracks>
 	{
-		public void Configure(EntityTypeBuilder<UserEnrolledTracks> builder)
+		public void Configure(EntityTypeBuilder<UserTracks> builder)
 		{
 			builder.HasKey(b => b.Id);
 
 			builder.HasOne(b => b.Track)
-				.WithMany(b => b.UserEnrolledTracks)
+				.WithMany(b => b.UserTracks)
 				.HasForeignKey(b => b.TrackId);
 		}
 	}
