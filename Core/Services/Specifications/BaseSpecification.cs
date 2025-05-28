@@ -9,37 +9,40 @@ using Domain.Interfaces;
 
 namespace Services.Specifications
 {
-    abstract public class BaseSpecification<TEntity, TKey> : ISpecification<TEntity, TKey> where TEntity 
-        : BaseEntity<TKey>
-    {
-        #region Where
-        protected BaseSpecification(Expression<Func<TEntity, bool>>? CriteriaExp)
-        {
-            Criteria = CriteriaExp;
+	abstract public class BaseSpecification<TEntity, TKey>
+		: ISpecification<TEntity, TKey> where TEntity
+		: BaseEntity<TKey>
+	{
+		#region Where
+		protected BaseSpecification(Expression<Func<TEntity, bool>>? CriteriaExp)
+		{
+			Criteria = CriteriaExp;
+		}
+		public Expression<Func<TEntity, bool>>? Criteria { get; private set; }
+		#endregion
 
-        }
-        public Expression<Func<TEntity, bool>>? Criteria { get; private set; }
-        #endregion
-
-        #region Include
-        public List<Expression<Func<TEntity, object>>> IncludeExp { get; } = [];
-
-
-        protected void AddInclude(Expression<Func<TEntity, object>> includeExp)
-        =>IncludeExp.Add(includeExp);
-        
-        #endregion
-
-        #region OrderBy
-        public Expression<Func<TEntity, object>> OrderBy { get; private set; }
-
-        public Expression<Func<TEntity, object>> OrderByDecs { get; private set; }
+		#region Include
+		public List<Expression<Func<TEntity, object>>> IncludeExp { get; } = [];
 
 
-        protected void AddOrderBy(Expression<Func<TEntity, object>> OrderByexpression) => OrderBy = OrderByexpression;
-        protected void AddOrderByDecs(Expression<Func<TEntity, object>> OrderByDecsexpression) => OrderByDecs = OrderByDecsexpression;
+		protected void AddInclude(Expression<Func<TEntity, object>> includeExp)
+		=> IncludeExp.Add( includeExp );
 
-        #endregion
+		#endregion
 
-    }
+		#region OrderBy
+		public Expression<Func<TEntity, object>> OrderBy { get; private set; }
+
+		public Expression<Func<TEntity, object>> OrderByDesc { get; private set; }
+
+
+		protected void AddOrderBy(Expression<Func<TEntity, object>> OrderByExpression) =>
+		OrderBy = OrderByExpression;
+
+		protected void AddOrderByDecs(Expression<Func<TEntity, object>> OrderByDescExpression) =>
+		OrderByDesc = OrderByDescExpression;
+
+		#endregion
+
+	}
 }
