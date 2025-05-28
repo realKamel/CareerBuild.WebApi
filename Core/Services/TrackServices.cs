@@ -3,6 +3,8 @@ using AutoMapper;
 using Domain.Entities;
 using Domain.Exceptions;
 using Domain.Interfaces;
+using Serilog;
+using Services.Specifications;
 using Shared.Dtos.TrackModule;
 using System;
 using System.Collections.Generic;
@@ -14,35 +16,35 @@ namespace Services
 {
 	public class TrackServices(IUnitOfWork _unitOfWork, IMapper _mapper) : ITrackServices
 	{
-		public async Task<IEnumerable<TrackDto>> GetAllTracks( )
+		public async Task<IEnumerable<TrackDto>> GetAllTracks(string searchWord)
 		{
 			var result = await _unitOfWork
-				.GetRepository<Track, int>().GetAllAsync();
+				.GetRepository<Track, int>().GetAllAsync(new TrackSpecification(searchWord));
 
-			if ( result == null || !result.Any() )
+			if (result == null || !result.Any())
 			{
-				throw new Exception( "Internal Error" );
+				Log.Error("No tracks found in the database.");
+				throw new Exception("Internal Error");
 			}
 
 			var resultToReturn = _mapper
-			.Map<IEnumerable<Track>, IEnumerable<TrackDto>>( result );
+				.Map<IEnumerable<Track>, IEnumerable<TrackDto>>(result);
 
 			return resultToReturn;
 		}
 
 		public async Task<TrackDto> GetTrackById(int trackId)
 		{
-
 			var result = await _unitOfWork
-				.GetRepository<Track, int>().GetByIdAsync( trackId );
+				.GetRepository<Track, int>().GetByIdAsync(trackId);
 
-			if ( result == null )
+			if (result == null)
 			{
-				throw new TrackNotFoundException( trackId );
+				throw new TrackNotFoundException(trackId);
 			}
 
 			var resultToReturn = _mapper
-				.Map<Track, TrackDto>( result );
+				.Map<Track, TrackDto>(result);
 
 			return resultToReturn;
 		}

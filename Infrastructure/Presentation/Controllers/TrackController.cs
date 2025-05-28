@@ -14,9 +14,9 @@ namespace Presentation.Controllers
 	public class TrackController(IServiceManager _serviceManager) : ControllerBase
 	{
 		[HttpGet()]
-		public async Task<ActionResult<IEnumerable<TrackDto>>> GetAllTracks( )
+		public async Task<ActionResult<IEnumerable<TrackDto>>> GetAllTracks(string? searchWord)
 		{
-			var tracks = await _serviceManager.TrackServices.GetAllTracks();
+			var tracks = await _serviceManager.TrackServices.GetAllTracks( searchWord );
 			return Ok( tracks );
 		}
 		[HttpGet( "{id}" )]
