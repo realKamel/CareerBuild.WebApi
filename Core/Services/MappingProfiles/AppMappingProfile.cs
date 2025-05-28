@@ -11,15 +11,16 @@ using System.Threading.Tasks;
 
 namespace Services.MappingProfiles
 {
-	internal class TrackMappingProfile : Profile
+	internal class AppMappingProfile : Profile
 	{
-		public TrackMappingProfile( )
+		public AppMappingProfile()
 		{
 			CreateMap<Track, TrackDto>();
 			CreateMap<Phase, PhaseDto>();
 			CreateMap<Exam, ExamDto>();
 			CreateMap<Course, CourseDto>();
 			CreateMap<PhaseSkills, SkillDto>();
+			CreateMap<UserTracks, UserTracksDto>();
 		}
 	}
 }

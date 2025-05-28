@@ -15,14 +15,14 @@ namespace CareerBuild.Web
 	{
 		public static async Task Main(string [] args)
 		{
-			var builder = WebApplication.CreateBuilder( args );
+			var builder = WebApplication.CreateBuilder(args);
 
 
 			#region DI Services Container
 
 			// Add services to the container.
 			Log.Logger = new LoggerConfiguration()
-								.ReadFrom.Configuration( builder.Configuration )
+								.ReadFrom.Configuration(builder.Configuration)
 								.Enrich.FromLogContext()
 								.CreateLogger();
 
@@ -35,9 +35,11 @@ namespace CareerBuild.Web
 
 			builder.Services.AddSwaggerServices(); // web
 
-			builder.Services.AddIdentityServices( builder.Configuration ); //persistence layer
+			builder.Services.AddIdentityServices(builder.Configuration); //persistence layer
 
 			builder.Services.AddAppCoreService(); //service layer
+
+			builder.Services.AddJWTService(builder.Configuration);
 
 			#endregion
 
@@ -47,10 +49,10 @@ namespace CareerBuild.Web
 			{
 				await app.DataSeedingAsync();
 			}
-			catch ( Exception e )
+			catch (Exception e)
 			{
-				Log.Error( e, "An error occurred during data seeding." );
-				throw new Exception( e.Message );
+				Log.Error(e, "An error occurred during data seeding.");
+				throw new Exception(e.Message);
 			}
 
 			#region Middlewares
@@ -70,7 +72,7 @@ namespace CareerBuild.Web
 
 			app.UseAuthentication(); // if we have login
 
-			app.UseCors( "AllowAngularDevClient" );// to enable request from Angular Project
+			app.UseCors("AllowAngularDevClient");// to enable request from Angular Project
 
 			app.UseAuthorization(); // if we have role 
 

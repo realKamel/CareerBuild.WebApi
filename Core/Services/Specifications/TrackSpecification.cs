@@ -22,6 +22,8 @@ namespace Services.Specifications
 		{
 			AddInclude(x => x.Phases);
 			AddInclude("Phases.Courses");
+			AddInclude("Phases.PhaseSkills");
+			AddInclude("Phases.Courses.Skills");
 			AddInclude("Phases.Exam");
 		}
 	}

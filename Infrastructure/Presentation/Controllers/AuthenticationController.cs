@@ -1,6 +1,7 @@
 ﻿using AbstractServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Dtos.Identity;
 using Shared.Dtos.Identity.Login;
 using Shared.Dtos.Identity.Register;
 using System;
@@ -60,12 +61,12 @@ namespace Presentation.Controllers
 
 		[Authorize]
 		[HttpPut("UpdatePassword")]
-		public async Task<ActionResult<bool>> UpdatePassword(string oldPassword, string newPassword)
+		public async Task<ActionResult<bool>> UpdatePassword(UpdatePasswordDto passwordDto)
 		{
 			var email = User.FindFirstValue(ClaimTypes.Email);
 
 			var result = await _serviceManager.AuthenticationServices
-				.UpdatePassword(email, oldPassword, newPassword);
+				.UpdatePassword(email, passwordDto.OldPassword, passwordDto.NewPassword);
 
 			return Ok(result);
 		}
