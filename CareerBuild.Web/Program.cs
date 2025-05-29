@@ -6,14 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.DbContexts;
 using Serilog;
-//using Persistence.Repositories;
 using Services;
 
 namespace CareerBuild.Web
 {
 	public class Program
 	{
-		public static async Task Main(string [] args)
+		public static async Task Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
@@ -52,7 +51,6 @@ namespace CareerBuild.Web
 			catch (Exception e)
 			{
 				Log.Error(e, "An error occurred during data seeding.");
-				throw new Exception(e.Message);
 			}
 
 			#region Middlewares
@@ -80,7 +78,7 @@ namespace CareerBuild.Web
 
 			#endregion
 
-			app.Run();
+			await app.RunAsync();
 		}
 	}
 }

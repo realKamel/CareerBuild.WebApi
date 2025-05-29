@@ -7,8 +7,8 @@ using Domain.Entities.IdentityModule;
 
 namespace Domain.Entities
 {
-    public class CompanyJobs:BaseEntity<int>
-    {   
+    public class CompanyJobs : BaseEntity<int>
+    {
         public string Title { get; set; } = default!;
         public string Content { get; set; } = default!;
         public ICollection<Job> Jobs { get; set; } = [];

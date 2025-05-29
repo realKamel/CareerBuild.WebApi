@@ -10,13 +10,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-	public class Job
+	public class Job : BaseEntity<int>
 	{
-		public int Id { get; set; }
-		public string Title { get; set; } = null!;
+		public string Name { get; set; } = null!;
 		public string Description { get; set; } = null!;
 		public Address Location { get; set; } = null!;
-		public DateTime PostedAt { get; set; }
 		public DateTime? ExpiresAt { get; set; } // this is optional
 		public EmploymentType EmploymentType { get; set; }
 
@@ -31,8 +29,8 @@ namespace Domain.Entities
 
 		public ICollection<UserJobs> UserJobs { get; set; } = new HashSet<UserJobs>();
 
-        public ICollection<CompanyJobs> Posts { get; set; } = new List<CompanyJobs>();
+		public ICollection<CompanyJobs> Posts { get; set; } = new HashSet<CompanyJobs>();
 
-        #endregion
-    }
+		#endregion
+	}
 }
