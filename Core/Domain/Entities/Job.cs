@@ -30,6 +30,9 @@ namespace Domain.Entities
 		public ICollection<JobSkills>? JobSkills { get; set; } = new HashSet<JobSkills>();
 
 		public ICollection<UserJobs> UserJobs { get; set; } = new HashSet<UserJobs>();
-		#endregion
-	}
+
+        public ICollection<CompanyJobs> Posts { get; set; } = new List<CompanyJobs>();
+
+        #endregion
+    }
 }
