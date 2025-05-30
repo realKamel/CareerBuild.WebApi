@@ -16,7 +16,7 @@ namespace Services.Specifications
 			AddInclude(x => x.Phases);
 		}
 
-		public TrackSpecification(string searchWord)
+		public TrackSpecification(string? searchWord)
 			: base(p => string.IsNullOrWhiteSpace(searchWord)
 			|| p.Name.ToLower().Contains(searchWord.ToLower()))
 		{

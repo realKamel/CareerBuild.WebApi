@@ -18,7 +18,7 @@ namespace Services
 {
 	public class TrackServices(IUnitOfWork _unitOfWork, IMapper _mapper) : ITrackServices
 	{
-		public async Task<IEnumerable<TrackDto>> GetAllTracks(string searchWord)
+		public async Task<IEnumerable<TrackDto>> GetAllTracks(string? searchWord)
 		{
 			var result = await _unitOfWork
 				.GetRepository<Track, int>().GetAllAsync(new TrackSpecification(searchWord));
