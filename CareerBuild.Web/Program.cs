@@ -41,9 +41,21 @@ namespace CareerBuild.Web
 
 			builder.Services.AddJWTService(builder.Configuration);
 
-			#endregion
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularApp",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:4200")
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                    });
+            });
 
-			var app = builder.Build();
+
+            #endregion
+
+            var app = builder.Build();
 
 			try
 			{
@@ -71,7 +83,7 @@ namespace CareerBuild.Web
 
 			app.UseAuthentication(); // if we have login
 
-			app.UseCors("AllowAngularDevClient"); // to enable request from Angular Project
+			app.UseCors("AllowAngularApp"); // to enable request from Angular Project
 
 			app.UseAuthorization(); // if we have role 
 
