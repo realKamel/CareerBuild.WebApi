@@ -65,4 +65,49 @@ public class JobService(IUnitOfWork _unitOfWork, IMapper _mapper) : IJobService
 
 		return _mapper.Map<Job, JobDto>(result);
 	}
+	public async Task<JobDto> UpdateJob(int id,CreatedJobDto updatedJobDto,string?companyEmail)
+	{
+		var jobExsit = await _unitOfWork.GetRepository<Job, int>().GetByIdAsync(id);
+		if(jobExsit is null)
+		{
+			throw new Exception("Error While Update Job");
+		}
+        var jobMapped = _mapper.Map(updatedJobDto, jobExsit);
+
+        jobExsit.UpdatedAt = DateTimeOffset.UtcNow;
+        jobExsit.UpdatedBy = companyEmail;
+
+        if (updatedJobDto.Skills != null)
+        {
+            jobExsit.Skills = _mapper.Map<ICollection<Skill>>(updatedJobDto.Skills);
+        }
+
+        try
+		{
+			_unitOfWork.GetRepository<Job, int>().Update(jobMapped);
+			await _unitOfWork.SaveChangesAsync();
+		}
+		catch(Exception ex)
+		{
+            Log.Error(ex.Message, "Error Happen When Update Job");
+            throw;
+        }
+		var result = await _unitOfWork.GetRepository<Job, int>().GetByIdAsync(jobMapped.Id);
+		if(result is null)
+		{
+			throw new Exception("Cant Update Now Try Again Later");
+		}
+		return _mapper.Map<Job, JobDto>(result);
+    }
+
+    public async Task<bool> DeletePost(int id)
+    {
+        var job = await _unitOfWork.GetRepository<Job, int>().GetByIdAsync(id);
+		if(job is not null)
+		{
+			_unitOfWork.GetRepository<Job, int>().Remove(job);
+			return true;
+		}
+		return false;
+    }
 }

@@ -9,20 +9,22 @@ using Shared.Dtos.SkillModule;
 
 namespace Services.MappingProfiles
 {
-	public class AppMappingProfile : Profile
-	{
-		public AppMappingProfile()
-		{
-			CreateMap<Track, TrackDto>();
-			CreateMap<Phase, PhaseDto>();
-			CreateMap<Exam, ExamDto>();
-			CreateMap<Course, CourseDto>();
-			CreateMap<PhaseSkills, SkillDto>();
-			CreateMap<UserTracks, UserTracksDto>();
-			CreateMap<Job, JobDto>().ReverseMap();
-			CreateMap<Skill, SkillDto>().ReverseMap();
-			CreateMap<CreatedJobDto, Job>();
-			CreateMap<CreatedSkillDto, Skill>();
-		}
-	}
+    public class AppMappingProfile : Profile
+    {
+        public AppMappingProfile()
+        {
+            CreateMap<Track, TrackDto>();
+            CreateMap<Phase, PhaseDto>();
+            CreateMap<Exam, ExamDto>();
+            CreateMap<Course, CourseDto>();
+            CreateMap<PhaseSkills, SkillDto>();
+            CreateMap<UserTracks, UserTracksDto>();
+            CreateMap<Job, JobDto>().ReverseMap();
+            CreateMap<Skill, SkillDto>().ReverseMap();
+            CreateMap<CreatedJobDto, Job>();
+            CreateMap<CreatedSkillDto, Skill>();
+        }
+    }
 }
+
+
