@@ -21,16 +21,17 @@ namespace CareerBuild.Web
 
 			// Add services to the container.
 			Log.Logger = new LoggerConfiguration()
-								.ReadFrom.Configuration(builder.Configuration)
-								.Enrich.FromLogContext()
-								.CreateLogger();
+				.ReadFrom.Configuration(builder.Configuration)
+				.Enrich.FromLogContext()
+				.CreateLogger();
 
 			builder.Host.UseSerilog(); // Use Serilog for logging
 			builder.Logging.ClearProviders();
 			builder.Logging.AddSerilog();
 
 
-			builder.Services.AddControllers(); // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+			builder.Services
+				.AddControllers(); // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 			builder.Services.AddSwaggerServices(); // web
 
@@ -70,7 +71,7 @@ namespace CareerBuild.Web
 
 			app.UseAuthentication(); // if we have login
 
-			app.UseCors("AllowAngularDevClient");// to enable request from Angular Project
+			app.UseCors("AllowAngularDevClient"); // to enable request from Angular Project
 
 			app.UseAuthorization(); // if we have role 
 

@@ -17,7 +17,9 @@ namespace Services.MappingProfiles
 			CreateMap<PhaseSkills, SkillDto>();
 			CreateMap<UserTracks, UserTracksDto>();
 			CreateMap<Job, JobDto>().ReverseMap();
-			CreateMap<Skill, SkillDto>();
+			CreateMap<Skill, SkillDto>().ReverseMap();
+			CreateMap<CreatedJobDto, Job>();
+			CreateMap<CreatedSkillDto, Skill>();
 		}
 	}
 }
