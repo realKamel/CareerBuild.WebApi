@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shared.Dtos.Identity.Register
+namespace Shared.Dtos.IdentityModule.Register
 {
 	public class RegisterBaseDto
 	{
@@ -16,9 +16,9 @@ namespace Shared.Dtos.Identity.Register
 		[EmailAddress]
 		[DataType(DataType.EmailAddress)]
 		public string Email { get; set; } = default!;
+
 		public string Password { get; set; } = default!;
 
-		[Phone]
-		public string? PhoneNumber { get; set; }
+		[Phone] public string? PhoneNumber { get; set; }
 	}
 }

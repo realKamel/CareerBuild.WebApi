@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Shared.Dtos.SkillModule;
 
 namespace Shared.Dtos
 {
@@ -13,6 +9,6 @@ namespace Shared.Dtos
 		public int DurationInHours { get; set; }
 		public string? ProviderName { get; set; }
 		public string? DifficultyLevel { get; set; }
-		public ICollection<SkillDto>? Skills { get; set; } = new HashSet<SkillDto>();
+		public ICollection<SkillDto>? Skills { get; set; }
 	}
 }

@@ -1,15 +1,10 @@
 ﻿using AbstractServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Dtos.Identity;
-using Shared.Dtos.Identity.Login;
-using Shared.Dtos.Identity.Register;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Shared.Dtos.IdentityModule;
+using Shared.Dtos.IdentityModule.Login;
+using Shared.Dtos.IdentityModule.Register;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {

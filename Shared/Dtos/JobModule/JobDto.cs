@@ -1,4 +1,6 @@
-namespace Shared.Dtos;
+using Shared.Dtos.SkillModule;
+
+namespace Shared.Dtos.JobModule;
 
 public class JobDto : BaseDto
 {

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Dtos;
-using Shared.Dtos.Identity.Login;
+using Shared.Dtos.IdentityModule.Login;
 using Shared.Dtos.TrackModule;
 using System;
 using System.Collections.Generic;
@@ -23,6 +23,7 @@ namespace Presentation.Controllers
 			var tracks = await _serviceManager.TrackServices.GetAllTracks(searchWord);
 			return Ok(tracks);
 		}
+
 		[HttpGet("{id}")]
 		public async Task<ActionResult<IEnumerable<TrackDto>>> GetTrackById(int id)
 		{

@@ -4,8 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Shared.Dtos.Common;
 
-namespace Shared.Dtos.Identity.Register
+namespace Shared.Dtos.IdentityModule.Register
 {
 	public class RegisterUserDto : RegisterBaseDto
 	{
@@ -15,8 +16,7 @@ namespace Shared.Dtos.Identity.Register
 		//[Range(1, 255)]
 		public string LastName { get; set; } = default!;
 
-		[MaxLength(255)]
-		public string? PreferredJobTitle { get; set; } = default!;
+		[MaxLength(255)] public string? PreferredJobTitle { get; set; } = default!;
 
 		public string? ResumeUrl { get; set; } = default!;
 

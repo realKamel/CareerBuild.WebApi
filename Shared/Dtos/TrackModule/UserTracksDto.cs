@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Shared.Dtos
+namespace Shared.Dtos.TrackModule
 {
 	public class UserTracksDto : BaseDto
 	{
