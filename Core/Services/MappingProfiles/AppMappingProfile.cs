@@ -3,6 +3,9 @@ using Domain.Entities;
 using Domain.Entities.JoinEntities;
 using Shared.Dtos;
 using Shared.Dtos.TrackModule;
+using Shared.Dtos.JobModule;
+using Shared.Dtos.SkillModule;
+
 
 namespace Services.MappingProfiles
 {
