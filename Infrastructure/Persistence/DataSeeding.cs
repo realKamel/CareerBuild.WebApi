@@ -13,8 +13,7 @@ namespace Persistence
 		IdentityContext _identityDb,
 		UserManager<AppUser> _userManager,
 		RoleManager<IdentityRole> _roleManager,
-		AppDbContext _appDb,
-		IUnitOfWork _unitOfWork) : IDataSeeding
+		AppDbContext _appDb) : IDataSeeding
 	{
 		public async Task AppDataSeeding()
 		{
@@ -378,6 +377,53 @@ namespace Persistence
 					//await _unitOfWork.GetRepository<Track, int>().AddAsync(track);
 					//await _unitOfWork.SaveChangesAsync();
 					await _appDb.Tracks.AddRangeAsync(tracks);
+				}
+
+				if (!_appDb.Jobs.Any())
+				{
+					Job jobs = new()
+					{
+						Name = "Software Engineer",
+						Description =
+							"Responsible for developing and maintaining software applications, collaborating with cross-functional teams to deliver high-quality solutions.",
+						CreatedBy = "Admin",
+						CompanyEmail = "abc@gmail.com",
+						Skills =
+						[
+							new Skill()
+							{
+								Name = "C#",
+								Description =
+									"A modern, object-oriented programming language developed by Microsoft, widely used for building Windows applications and web services.",
+								Category = SkillCategory.ProgrammingLanguage
+							},
+							new Skill()
+							{
+								Name = "ASP.NET Core",
+								Description =
+									"A cross-platform, high-performance framework for building modern, cloud-based, internet-connected applications.",
+								Category = SkillCategory.Framework
+							},
+							new Skill()
+							{
+								Name = "SQL Server",
+								Description =
+									"A relational database management system developed by Microsoft, used to store and retrieve data for software applications.",
+								Category = SkillCategory.Database
+							}
+						],
+						EmploymentType = EmploymentType.FullTime,
+						Location = new Address()
+						{
+							Street = "456 Tech Lane",
+							City = "Cairo",
+							Country = "Egypt"
+						},
+						MinSalary = 10000,
+						MaxSalary = 12000,
+						ExpiresAt = DateTime.Now.AddDays(30),
+					};
+					await _appDb.Jobs.AddAsync(jobs);
 				}
 
 				await _appDb.SaveChangesAsync();

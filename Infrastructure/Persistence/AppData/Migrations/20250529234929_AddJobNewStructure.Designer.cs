@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence.DbContexts;
 
@@ -11,9 +12,11 @@ using Persistence.DbContexts;
 namespace Persistence.AppData.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250529234929_AddJobNewStructure")]
+    partial class AddJobNewStructure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace Persistence.AppData.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("CourseSkill", b =>
-                {
-                    b.Property<int>("CoursesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SkillsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CoursesId", "SkillsId");
-
-                    b.HasIndex("SkillsId");
-
-                    b.ToTable("CourseSkills", (string)null);
-                });
 
             modelBuilder.Entity("Domain.Entities.Course", b =>
                 {
@@ -222,6 +210,28 @@ namespace Persistence.AppData.Migrations
                         {
                             t.HasCheckConstraint("ensure_salary_Range_check", "[MaxSalary] >= [MinSalary]");
                         });
+                });
+
+            modelBuilder.Entity("Domain.Entities.JoinEntities.JobSkills", b =>
+                {
+                    b.Property<int>("JobId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SkillId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsMandatory")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RequiredProficiency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("JobId", "SkillId");
+
+                    b.HasIndex("SkillId");
+
+                    b.ToTable("JobSkills");
                 });
 
             modelBuilder.Entity("Domain.Entities.JoinEntities.PhaseSkills", b =>
@@ -554,7 +564,7 @@ namespace Persistence.AppData.Migrations
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
 
-                    b.Property<int?>("ExamId")
+                    b.Property<int?>("ExamID")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
@@ -573,7 +583,9 @@ namespace Persistence.AppData.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExamId");
+                    b.HasIndex("CourseID");
+
+                    b.HasIndex("ExamID");
 
                     b.ToTable("Skills");
                 });
@@ -648,36 +660,6 @@ namespace Persistence.AppData.Migrations
                     b.ToTable("TrackPrerequisites");
                 });
 
-            modelBuilder.Entity("JobSkill", b =>
-                {
-                    b.Property<int>("JobsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SkillsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("JobsId", "SkillsId");
-
-                    b.HasIndex("SkillsId");
-
-                    b.ToTable("JobSkill");
-                });
-
-            modelBuilder.Entity("CourseSkill", b =>
-                {
-                    b.HasOne("Domain.Entities.Course", null)
-                        .WithMany()
-                        .HasForeignKey("CoursesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Skill", null)
-                        .WithMany()
-                        .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Entities.Course", b =>
                 {
                     b.HasOne("Domain.Entities.Phase", "Phase")
@@ -717,6 +699,25 @@ namespace Persistence.AppData.Migrations
 
                     b.Navigation("Location")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.JoinEntities.JobSkills", b =>
+                {
+                    b.HasOne("Domain.Entities.Job", "Job")
+                        .WithMany("JobSkills")
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Skill", "Skill")
+                        .WithMany("JobSkills")
+                        .HasForeignKey("SkillId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Job");
+
+                    b.Navigation("Skill");
                 });
 
             modelBuilder.Entity("Domain.Entities.JoinEntities.PhaseSkills", b =>
@@ -821,9 +822,17 @@ namespace Persistence.AppData.Migrations
 
             modelBuilder.Entity("Domain.Entities.Skill", b =>
                 {
-                    b.HasOne("Domain.Entities.Exam", null)
+                    b.HasOne("Domain.Entities.Course", "Course")
                         .WithMany("Skills")
-                        .HasForeignKey("ExamId");
+                        .HasForeignKey("CourseID");
+
+                    b.HasOne("Domain.Entities.Exam", "Exam")
+                        .WithMany("Skills")
+                        .HasForeignKey("ExamID");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Exam");
                 });
 
             modelBuilder.Entity("Domain.Entities.TrackPrerequisites", b =>
@@ -837,19 +846,9 @@ namespace Persistence.AppData.Migrations
                     b.Navigation("Track");
                 });
 
-            modelBuilder.Entity("JobSkill", b =>
+            modelBuilder.Entity("Domain.Entities.Course", b =>
                 {
-                    b.HasOne("Domain.Entities.Job", null)
-                        .WithMany()
-                        .HasForeignKey("JobsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.Skill", null)
-                        .WithMany()
-                        .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Skills");
                 });
 
             modelBuilder.Entity("Domain.Entities.Exam", b =>
@@ -864,6 +863,8 @@ namespace Persistence.AppData.Migrations
 
             modelBuilder.Entity("Domain.Entities.Job", b =>
                 {
+                    b.Navigation("JobSkills");
+
                     b.Navigation("UserJobs");
                 });
 
@@ -878,6 +879,8 @@ namespace Persistence.AppData.Migrations
 
             modelBuilder.Entity("Domain.Entities.Skill", b =>
                 {
+                    b.Navigation("JobSkills");
+
                     b.Navigation("PhaseSkills");
 
                     b.Navigation("UserSkills");

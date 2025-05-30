@@ -12,8 +12,8 @@ namespace Domain.Entities
 {
 	public class Job : BaseEntity<int>
 	{
-		public string Name { get; set; } = null!;
-		public string Description { get; set; } = null!;
+		public required string Name { get; set; }
+		public required string Description { get; set; }
 		public Address Location { get; set; } = null!;
 		public DateTime? ExpiresAt { get; set; } // this is optional
 		public EmploymentType EmploymentType { get; set; }
@@ -22,14 +22,13 @@ namespace Domain.Entities
 		public decimal MinSalary { get; set; }
 		public decimal MaxSalary { get; set; }
 
-		public string CompanyEmail { get; set; } = null!;
+		public required string CompanyEmail { get; set; }
 
 		#region Relations
-		public ICollection<JobSkills>? JobSkills { get; set; } = new HashSet<JobSkills>();
 
-		public ICollection<UserJobs> UserJobs { get; set; } = new HashSet<UserJobs>();
+		public ICollection<Skill>? Skills { get; set; } = new HashSet<Skill>();
 
-		public ICollection<CompanyJobs> Posts { get; set; } = new HashSet<CompanyJobs>();
+		public ICollection<UserJobs>? UserJobs { get; set; } = new HashSet<UserJobs>();
 
 		#endregion
 	}
