@@ -6,12 +6,12 @@ public class BaseDto
 {
 	public int Id { get; set; }
 
-	[MaxLength( 250, ErrorMessage = "Maximum length is {250}" )]
+	[MaxLength(250, ErrorMessage = "Maximum length is {250}")]
 	public string Name { get; set; } = null!; // required
 
-	[MaxLength( 1000, ErrorMessage = "Maximum length is {1000}" )]
-	public string? Description { get; set; } = null; // required
+	[MaxLength(1000, ErrorMessage = "Maximum length is {1000}")]
+	public string? Description { get; set; } // required
 
-	public DateTime DateTime { get; set; }
-	public DateTime? UpdatedAt { get; set; }
+	public DateTimeOffset CreatedAt { get; set; }
+	public DateTimeOffset? UpdatedAt { get; set; }
 }

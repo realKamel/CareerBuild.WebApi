@@ -10,5 +10,6 @@ namespace AbstractServices
 	{
 		public IAuthenticationServices AuthenticationServices { get; }
 		public ITrackServices TrackServices { get; }
+		public IJobService JobService { get; }
 	}
 }

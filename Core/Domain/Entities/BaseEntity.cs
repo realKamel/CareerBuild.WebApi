@@ -9,14 +9,13 @@ namespace Domain.Entities
 {
 	public class BaseEntity<TKey>
 	{
-		[Key]
-		public TKey Id { get; set; }
-		public DateTime CreatedAt { get; set; } = DateTime.Now;
-		public bool IsDeleted { get; set; } = false;
-		public string? DeletedBy { get; set; } 
-		public DateTime? DeletedAt { get; set; } 
+		[Key] public TKey Id { get; set; }
 		public string? CreatedBy { get; set; }
+		public DateTimeOffset CreatedAt { get; private set; } = DateTimeOffset.UtcNow;
+		public string? DeletedBy { get; set; }
+		public DateTimeOffset? DeletedAt { get; set; }
 		public string? UpdatedBy { get; set; }
-		public DateTime? UpdatedAt { get; set; }
+		public DateTimeOffset? UpdatedAt { get; set; }
+		public bool IsDeleted { get; set; } = false;
 	}
 }
