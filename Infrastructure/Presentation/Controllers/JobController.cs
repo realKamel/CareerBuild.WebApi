@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using AbstractServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,15 +11,16 @@ namespace Presentation.Controllers;
 [Route("api/[controller]")]
 public class JobController(IServiceManager _serviceManager) : ControllerBase
 {
-	[HttpGet]
+	[HttpGet] // Get api/Jobs 
+			  //get all jobs for everyone
 	public async Task<ActionResult<JobDto>> GetAllJobs(string? searchWord)
 	{
 		var result = await _serviceManager.JobService.GetAllJobs(searchWord);
 		return Ok(result);
 	}
 
-	[HttpGet("{id}")]
-	public async Task<ActionResult<JobDto>> GetbyIdJobs(int id)
+	[HttpGet("{id}")] // Get api/Job/id
+	public async Task<ActionResult<JobDto>> GetByIdJobs(int id)
 	{
 		var result = await _serviceManager.JobService.GetJobById(id);
 		return Ok(result);
@@ -32,19 +34,30 @@ public class JobController(IServiceManager _serviceManager) : ControllerBase
 		var result = await _serviceManager.JobService.CreatedJob(createdJobDto, companyEmail);
 		return Ok(result);
 	}
-	[HttpPost("Update/{id}")]
-	[au]
-    public async Task<IActionResult> UpdateJob(int id, CreatedJobDto updatedJobDto)
-    {
-        var companyEmail = User.FindFirstValue(ClaimTypes.Email);
-		var result = await _serviceManager.JobService.UpdateJob(id, updatedJobDto,companyEmail);
+
+	[HttpPatch("{id}")]
+	[Authorize]
+	public async Task<IActionResult> UpdateJob(int id, CreatedJobDto updatedJobDto)
+	{
+		var companyEmail = User.FindFirstValue(ClaimTypes.Email);
+		var result = await _serviceManager.JobService.UpdateJob(id, updatedJobDto, companyEmail);
 		return Ok(result);
 	}
 
-	[HttpDelete("Delete/{id}")]
-	public async Task<ActionResult> DeleteJob(int id)
+	[Authorize]
+	[HttpDelete("{id}")]
+	public async Task<ActionResult<bool>> DeleteJobPost(int id)
 	{
 		var result = await _serviceManager.JobService.DeletePost(id);
+		return Ok(result);
+	}
+
+	[Authorize]
+	[HttpGet("CompanyPosts")] // GET api/Job/CompanyPosts
+	public async Task<ActionResult<IEnumerable<JobDto>>> GetCompanyPostedJobs(string? searchWord)
+	{
+		var companyEmail = User.FindFirstValue(ClaimTypes.Email);
+		var result = await _serviceManager.JobService.GetCompanyPostedJobs(searchWord, companyEmail);
 		return Ok(result);
 	}
 }
