@@ -10,13 +10,17 @@ namespace Shared.Dtos.IdentityModule.Register
 {
 	public class RegisterUserDto : RegisterBaseDto
 	{
-		//[Range(1,255)]
+		[Required(ErrorMessage = "firstName is required")]
+		[StringLength(20, ErrorMessage = "Must be between 3 and 20 characters", MinimumLength = 3)]
 		public string FirstName { get; set; } = default!;
 
-		//[Range(1, 255)]
+
+		[Required(ErrorMessage = "lastName is required")]
+		[StringLength(20, ErrorMessage = "Must be between 3 and 20 characters", MinimumLength = 3)]
 		public string LastName { get; set; } = default!;
 
-		[MaxLength(255)] public string? PreferredJobTitle { get; set; } = default!;
+		[MaxLength(255)]
+		public string? PreferredJobTitle { get; set; } = default!;
 
 		public string? ResumeUrl { get; set; } = default!;
 
