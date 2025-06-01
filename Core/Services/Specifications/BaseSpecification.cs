@@ -44,9 +44,9 @@ namespace Services.Specifications
 
 		#region OrderBy
 
-		public Expression<Func<TEntity, object>> OrderBy { get; private set; }
+		public Expression<Func<TEntity, object>>? OrderBy { get; private set; }
 
-		public Expression<Func<TEntity, object>> OrderByDesc { get; private set; }
+		public Expression<Func<TEntity, object>>? OrderByDesc { get; private set; }
 
 		protected void AddOrderBy(Expression<Func<TEntity, object>> OrderByExpression) =>
 			OrderBy = OrderByExpression;
