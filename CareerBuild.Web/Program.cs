@@ -41,21 +41,21 @@ namespace CareerBuild.Web
 
 			builder.Services.AddJWTService(builder.Configuration);
 
-            builder.Services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAngularApp",
-                    policy =>
-                    {
-                        policy.WithOrigins("http://localhost:4200")
-                              .AllowAnyHeader()
-                              .AllowAnyMethod();
-                    });
-            });
+			builder.Services.AddCors(options =>
+			{
+				options.AddPolicy("AllowAngularApp",
+					policy =>
+					{
+						policy.WithOrigins("http://localhost:4200")
+							  .AllowAnyHeader()
+							  .AllowAnyMethod();
+					});
+			});
 
 
-            #endregion
+			#endregion
 
-            var app = builder.Build();
+			var app = builder.Build();
 
 			try
 			{
@@ -64,6 +64,7 @@ namespace CareerBuild.Web
 			catch (Exception e)
 			{
 				Log.Error(e, "An error occurred during data seeding.");
+				throw;
 			}
 
 			#region Middlewares
@@ -90,7 +91,7 @@ namespace CareerBuild.Web
 			app.MapControllers(); // maps api controllers
 
 			#endregion
-
+			app.Logger.LogInformation("Current Environment: {Env}", app.Environment.EnvironmentName);
 			await app.RunAsync();
 		}
 	}
