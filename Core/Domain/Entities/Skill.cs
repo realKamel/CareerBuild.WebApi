@@ -19,18 +19,14 @@ namespace Domain.Entities
 		public SkillCategory? Category { get; set; }
 
 		#region Relations
-		#region Exam Relation
-		public int? ExamID { get; set; }
-		public Exam? Exam { get; set; } = default!;
-		#endregion
 
 		#region Course Relation
 		public int? CourseID { get; set; }
-		public Course? Course { get; set; } = default!;
+		public ICollection<Course>? Courses { get; set; } = new HashSet<Course>();
 		#endregion
 
 		#region JobRequiredSkills relations
-		public ICollection<JobSkills>? JobSkills { get; set; } = new HashSet<JobSkills>();
+		public ICollection<Job>? Jobs { get; set; } = new HashSet<Job>();
 		#endregion
 
 		#region PhaseProvidedSkills relations

@@ -16,11 +16,9 @@ namespace Persistence.AppData.Configurations
 		{
 			builder.HasKey(x => x.Id);// for PK
 
-			builder.HasOne(e => e.Exam).WithMany(x => x.Skills)
-				.HasForeignKey(e => e.ExamID);
-
-			builder.HasOne(e => e.Course).WithMany(x => x.Skills)
-				.HasForeignKey(e => e.CourseID);
+			builder.HasMany(x => x.Courses)
+				.WithMany(x => x.Skills)
+				.UsingEntity(j => j.ToTable("CourseSkills"));// many-to-many relationship with Course
 
 			//to make sure skill category is not null in the database
 			builder.Property(b => b.Category)

@@ -6,51 +6,64 @@ using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.DbContexts;
 using Serilog;
-//using Persistence.Repositories;
 using Services;
 
 namespace CareerBuild.Web
 {
 	public class Program
 	{
-		public static async Task Main(string [] args)
+		public static async Task Main(string[] args)
 		{
-			var builder = WebApplication.CreateBuilder( args );
+			var builder = WebApplication.CreateBuilder(args);
 
 
 			#region DI Services Container
 
 			// Add services to the container.
 			Log.Logger = new LoggerConfiguration()
-								.ReadFrom.Configuration( builder.Configuration )
-								.Enrich.FromLogContext()
-								.CreateLogger();
+				.ReadFrom.Configuration(builder.Configuration)
+				.Enrich.FromLogContext()
+				.CreateLogger();
 
 			builder.Host.UseSerilog(); // Use Serilog for logging
 			builder.Logging.ClearProviders();
 			builder.Logging.AddSerilog();
 
 
-			builder.Services.AddControllers(); // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+			builder.Services
+				.AddControllers(); // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 			builder.Services.AddSwaggerServices(); // web
 
-			builder.Services.AddIdentityServices( builder.Configuration ); //persistence layer
+			builder.Services.AddIdentityServices(builder.Configuration); //persistence layer
 
 			builder.Services.AddAppCoreService(); //service layer
 
-			#endregion
+			builder.Services.AddJWTService(builder.Configuration);
 
-			var app = builder.Build();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularApp",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:4200")
+                              .AllowAnyHeader()
+                              .AllowAnyMethod();
+                    });
+            });
+
+
+            #endregion
+
+            var app = builder.Build();
 
 			try
 			{
 				await app.DataSeedingAsync();
 			}
-			catch ( Exception e )
+			catch (Exception e)
 			{
-				Log.Error( e, "An error occurred during data seeding." );
-				throw new Exception( e.Message );
+				Log.Error(e, "An error occurred during data seeding.");
 			}
 
 			#region Middlewares
@@ -70,7 +83,7 @@ namespace CareerBuild.Web
 
 			app.UseAuthentication(); // if we have login
 
-			app.UseCors( "AllowAngularDevClient" );// to enable request from Angular Project
+			app.UseCors("AllowAngularApp"); // to enable request from Angular Project
 
 			app.UseAuthorization(); // if we have role 
 
@@ -78,7 +91,7 @@ namespace CareerBuild.Web
 
 			#endregion
 
-			app.Run();
+			await app.RunAsync();
 		}
 	}
 }

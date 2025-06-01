@@ -3,13 +3,7 @@ using AutoMapper;
 using Domain.Entities.IdentityModule;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
@@ -21,20 +15,23 @@ namespace Services
 	{
 		#region Lazy Fields
 
-		private readonly Lazy<IAuthenticationServices> authenticationServices =
-			new Lazy<IAuthenticationServices>( ( ) =>
-				new AuthenticationServices( _userManager, _mapper, Configuration ) );
+		private readonly Lazy<IAuthenticationServices> _authenticationServices =
+			new Lazy<IAuthenticationServices>(() => new AuthenticationServices(_userManager, _mapper, Configuration));
 
-		private readonly Lazy<ITrackServices> trackServices =
-			new Lazy<ITrackServices>( ( ) => new TrackServices( _unitOfWork, _mapper ) );
+		private readonly Lazy<ITrackServices> _trackServices =
+			new Lazy<ITrackServices>(() => new TrackServices(_unitOfWork, _mapper));
+
+		private readonly Lazy<IJobService> _jobService =
+			new Lazy<IJobService>(() => new JobService(_unitOfWork, _mapper));
 
 		#endregion
 
 
 		#region Properties
 
-		public IAuthenticationServices AuthenticationServices => authenticationServices.Value;
-		public ITrackServices TrackServices => trackServices.Value;
+		public IAuthenticationServices AuthenticationServices => _authenticationServices.Value;
+		public ITrackServices TrackServices => _trackServices.Value;
+		public IJobService JobService => _jobService.Value;
 
 		#endregion
 	}

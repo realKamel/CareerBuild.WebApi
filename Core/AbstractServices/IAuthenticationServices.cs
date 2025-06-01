@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
-using Shared.Dtos.Identity.Login;
-using Shared.Dtos.Identity.Register;
+using Shared.Dtos.IdentityModule.Login;
+using Shared.Dtos.IdentityModule.Register;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +33,5 @@ namespace AbstractServices
 
 		// if user want to update his password
 		public Task<bool> UpdatePassword(string? email, string currentPassword, string newPassword);
-
 	}
 }

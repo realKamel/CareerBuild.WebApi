@@ -16,6 +16,6 @@ namespace Domain.Entities.IdentityModule
 		public string Size { get; set; } = default!;
 		public string Industry { get; set; } = default!;
 		public string WebsiteUrl { get; set; } = default!;
-		#endregion
-	}
+        #endregion
+    }
 }

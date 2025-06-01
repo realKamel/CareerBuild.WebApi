@@ -9,7 +9,7 @@ namespace Domain.Entities.Common
 	public enum SkillCategory
 	{
 		None = 0,
-		Programming = 1,
+		ProgrammingLanguage = 1,
 		WebDevelopment = 2,
 		DataScience = 3,
 		MachineLearning = 4,
@@ -22,6 +22,8 @@ namespace Domain.Entities.Common
 		DevOps = 11,
 		DataEngineering = 12,
 		BigData = 13,
-		IOT = 14
+		IOT = 14,
+		Framework = 15,
+		Database = 16
 	}
 }

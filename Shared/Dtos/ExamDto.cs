@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Shared.Dtos.SkillModule;
 
 namespace Shared.Dtos
 {
@@ -14,6 +15,6 @@ namespace Shared.Dtos
 		public int MaxAttempts { get; set; }
 		public string? ExamLink { get; set; }
 
-		public ICollection<SkillDto> Skills { get; set; } = new HashSet<SkillDto>();
+		public ICollection<SkillDto> Skills { get; set; }
 	}
 }

@@ -10,7 +10,8 @@ public class BaseDto
 	public string Name { get; set; } = null!; // required
 
 	[MaxLength(1000, ErrorMessage = "Maximum length is {1000}")]
-	public string? Description { get; set; } = null; // required
+	public string? Description { get; set; } // required
 
-	public DateTime? UpdatedAt { get; set; } 
+	public DateTimeOffset CreatedAt { get; set; }
+	public DateTimeOffset? UpdatedAt { get; set; }
 }

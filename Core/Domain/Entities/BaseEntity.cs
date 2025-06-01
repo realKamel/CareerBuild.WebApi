@@ -7,16 +7,15 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-	public class BaseEntity<TKey> 
+	public class BaseEntity<TKey>
 	{
-		[Key]
-		public TKey Id { get; set; }
-		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+		[Key] public TKey Id { get; set; }
+		public string? CreatedBy { get; set; }
+		public DateTimeOffset CreatedAt { get; private set; } = DateTimeOffset.UtcNow;
+		public string? DeletedBy { get; set; }
+		public DateTimeOffset? DeletedAt { get; set; }
+		public string? UpdatedBy { get; set; }
+		public DateTimeOffset? UpdatedAt { get; set; }
 		public bool IsDeleted { get; set; } = false;
-		public string? DeletedBy { get; set; } = null;
-		public DateTime? DeletedAt { get; set; } = null;
-		public string? CreatedBy { get; set; } = null;
-		public string? UpdatedBy { get; set; } = null;
-		public DateTime? UpdatedAt { get; set; } = null;
 	}
 }
