@@ -11,11 +11,14 @@ namespace Domain.Entities
 
 		[MaxLength(1000, ErrorMessage = "Maximum length is {1000}")]
 		public string? Description { get; set; } = null!; // required
+
 		public int EstimatedDurationInHours { get; set; }
+
 		public DifficultyLevel DifficultyLevel { get; set; }
 
 
 		#region Relations
+
 		public ICollection<Phase> Phases { get; set; } = new HashSet<Phase>();
 
 		public ICollection<TrackPrerequisites>? TrackPrerequisites { get; set; }

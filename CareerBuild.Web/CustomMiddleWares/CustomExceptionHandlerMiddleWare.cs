@@ -1,18 +1,13 @@
 ﻿using Domain.Exceptions;
+using Microsoft.Data.SqlClient;
+using Serilog;
 using Shared.ErrorModels;
 
 namespace CareerBuild.Web.CustomMiddleWares
 {
-	public class CustomExceptionHandlerMiddleWare
+	public class CustomExceptionHandlerMiddleWare(RequestDelegate next)
 	{
-		private readonly RequestDelegate _next;
-		private readonly ILogger<CustomExceptionHandlerMiddleWare> _logger;
-
-		public CustomExceptionHandlerMiddleWare(RequestDelegate next, ILogger<CustomExceptionHandlerMiddleWare> logger)
-		{
-			_next = next;
-			_logger = logger;
-		}
+		private readonly RequestDelegate _next = next;
 
 		public async Task InvokeAsync(HttpContext context)
 		{
@@ -24,7 +19,7 @@ namespace CareerBuild.Web.CustomMiddleWares
 			}
 			catch (Exception e)
 			{
-				_logger.LogError(e, e.Message);
+				Log.Error(e.Message);
 				await HandleExceptionAsync(context, e);
 			}
 		}
@@ -40,7 +35,6 @@ namespace CareerBuild.Web.CustomMiddleWares
 			// we change status code for response 
 			context.Response.StatusCode = e switch
 			{
-				UserNotFoundException => StatusCodes.Status404NotFound,
 				WrongLoginException => StatusCodes.Status401Unauthorized,
 				NotFoundException => StatusCodes.Status404NotFound,
 				BadRequestException req => GetExceptionErrors(req, res),
@@ -67,7 +61,7 @@ namespace CareerBuild.Web.CustomMiddleWares
 				var res = new ErrorToReturn()
 				{
 					StatusCode = StatusCodes.Status404NotFound,
-					ErrorMessage = $"End Point {context.Request.Path} is Not Fount"
+					ErrorMessage = $"End Point {context.Request.Path} is Not Found"
 				};
 				await context.Response.WriteAsJsonAsync(res);
 			}

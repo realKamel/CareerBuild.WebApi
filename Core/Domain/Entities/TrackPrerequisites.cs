@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+
 
 namespace Domain.Entities
 {
 	public class TrackPrerequisites
 	{
 		[Key] public int TrackId { get; }
-		public Track Track { get; set; } = default!;
+		public Track Track { get; set; } = null!;
 
 		[MaxLength(250, ErrorMessage = "Maximum length is {250}")]
 		public string PrerequisiteName { get; set; } = default!;

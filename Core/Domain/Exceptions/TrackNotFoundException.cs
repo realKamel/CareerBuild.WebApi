@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Domain.Exceptions
 {
 	public sealed class TrackNotFoundException(int id) :
-		NotFoundException( $"Track with id={id} is not Found" )
+		NotFoundException($"Track with id={id} is not Found")
 	{
 	}
 }

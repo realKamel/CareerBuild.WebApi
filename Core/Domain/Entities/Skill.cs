@@ -16,24 +16,32 @@ namespace Domain.Entities
 
 		[MaxLength(1000, ErrorMessage = "Maximum length is {1000}")]
 		public string? Description { get; set; } = null!; // required
+
 		public SkillCategory? Category { get; set; }
 
 		#region Relations
 
 		#region Course Relation
-		public int? CourseID { get; set; }
+
+		public int? CourseId { get; set; }
 		public ICollection<Course>? Courses { get; set; } = new HashSet<Course>();
+
 		#endregion
 
 		#region JobRequiredSkills relations
+
 		public ICollection<Job>? Jobs { get; set; } = new HashSet<Job>();
+
 		#endregion
 
 		#region PhaseProvidedSkills relations
+
 		public ICollection<PhaseSkills>? PhaseSkills { get; set; } = new HashSet<PhaseSkills>();
+
 		#endregion
 
 		public ICollection<UserSkills>? UserSkills { get; set; } = new HashSet<UserSkills>();
+
 		#endregion
 	}
 }

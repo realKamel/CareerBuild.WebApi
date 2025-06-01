@@ -9,5 +9,5 @@ public interface IJobService
 	Task<JobDto> CreatedJob(CreatedJobDto createdJobDto, string? companyEmail);
 	Task<JobDto> UpdateJob(int Id, CreatedJobDto jobUpdateDto, string? companyEmail);
 	Task<bool> DeletePost(int id);
-
+	Task<IEnumerable<JobDto>> GetCompanyPostedJobs(string? searchWord, string? email);
 }

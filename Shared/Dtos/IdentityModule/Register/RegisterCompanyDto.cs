@@ -9,7 +9,9 @@ namespace Shared.Dtos.IdentityModule.Register
 {
 	public class RegisterCompanyDto : RegisterBaseDto
 	{
-		[Range(1, 255)] public string CompanyName { get; set; } = default!;
+		[Required(ErrorMessage = "companyName is Required")]
+		[StringLength(20, ErrorMessage = "Must be between 3 and 20 characters", MinimumLength = 3)]
+		public string CompanyName { get; set; } = default!;
 		public string Size { get; set; } = default!;
 		public string Industry { get; set; } = default!;
 		public string WebsiteUrl { get; set; } = default!;
