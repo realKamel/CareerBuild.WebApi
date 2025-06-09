@@ -3,6 +3,7 @@ using AutoMapper;
 using Domain.Entities.IdentityModule;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 
 namespace Services
@@ -11,7 +12,9 @@ namespace Services
 		UserManager<AppUser> _userManager,
 		IMapper _mapper,
 		IConfiguration Configuration,
-		IUnitOfWork _unitOfWork) : IServiceManager
+		IUnitOfWork _unitOfWork,
+		IHttpClientFactory _httpClient,
+		IDistributedCache _distributedCache) : IServiceManager
 	{
 		#region Lazy Fields
 
@@ -19,10 +22,10 @@ namespace Services
 			new Lazy<IAuthenticationServices>(() => new AuthenticationServices(_userManager, _mapper, Configuration));
 
 		private readonly Lazy<ITrackServices> _trackServices =
-			new Lazy<ITrackServices>(() => new TrackServices(_unitOfWork, _mapper));
+			new Lazy<ITrackServices>(() => new TrackServices(_unitOfWork, _mapper, _httpClient, _distributedCache));
 
 		private readonly Lazy<IJobService> _jobService =
-			new Lazy<IJobService>(() => new JobService(_unitOfWork, _mapper));
+			new Lazy<IJobService>(() => new JobService(_unitOfWork, _mapper, _userManager));
 
 		#endregion
 

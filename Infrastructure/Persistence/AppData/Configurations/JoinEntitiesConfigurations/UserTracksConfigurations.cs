@@ -19,6 +19,9 @@ namespace Persistence.AppData.Configurations.JoinEntitiesConfigurations
 			builder.HasOne(b => b.Track)
 				.WithMany(b => b.UserTracks)
 				.HasForeignKey(b => b.TrackId);
+
+			builder.HasIndex(u => new { u.UserEmail, u.TrackId })
+				.IsUnique();
 		}
 	}
 }

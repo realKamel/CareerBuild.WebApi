@@ -35,8 +35,7 @@ namespace Persistence
 			if (specification.IncludeExp is not null && specification.IncludeExp.Count > 0)
 			{
 				Query = specification.IncludeExp.Aggregate(Query,
-					(Current, IncludeExp) =>
-						Current.Include(IncludeExp));
+					(current, includeExp) => current.Include(includeExp));
 			}
 
 			if (specification.IncludeStrings is not null && specification.IncludeStrings.Count > 0)
@@ -44,6 +43,12 @@ namespace Persistence
 				Query = specification.IncludeStrings.Aggregate(
 					Query, (curr, IncludeStringItems) =>
 						curr.Include(IncludeStringItems));
+			}
+
+			if (specification.ThenIncludeExp is not null && specification.ThenIncludeExp.Count > 0)
+			{
+				Query = specification.ThenIncludeExp.Aggregate(Query,
+					(current, thenIncludeExp) => thenIncludeExp(current));
 			}
 
 			return Query;

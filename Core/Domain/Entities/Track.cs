@@ -1,5 +1,6 @@
-﻿using Domain.Entities.Common;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Domain.Entities.Common;
 using Domain.Entities.JoinEntities;
 
 namespace Domain.Entities
@@ -12,19 +13,49 @@ namespace Domain.Entities
 		[MaxLength(1000, ErrorMessage = "Maximum length is {1000}")]
 		public string? Description { get; set; } = null!; // required
 
-		public int EstimatedDurationInHours { get; set; }
+		private int durationInHours;
+		public int DurationInHours
+		{
+			get
+			{
+				if (Courses == null || Courses.Count == 0)
+					return 0;
+				// Calculate the total duration in hours from the courses
+				return Courses.Sum(c => c.DurationInHours);
+			}
+			set { durationInHours = value; }
+		}
 
 		public DifficultyLevel DifficultyLevel { get; set; }
 
-
+		public string? CoverUrl { get; set; } // optional
+		public string? ProviderName { get; set; } // optional
 		#region Relations
 
-		public ICollection<Phase> Phases { get; set; } = new HashSet<Phase>();
+		public ICollection<Course>? Courses { get; set; } = new HashSet<Course>();
 
-		public ICollection<TrackPrerequisites>? TrackPrerequisites { get; set; }
-			= new HashSet<TrackPrerequisites>();
+		public ICollection<Exam>? Exams { get; set; } = new HashSet<Exam>();
 
-		public ICollection<UserPhases>? UserPhases = new HashSet<UserPhases>();
+		[NotMapped]
+		private ICollection<Skill>? skills;
+		public ICollection<Skill>? Skills
+		{
+			get
+			{
+				if (Courses == null || Courses.Count == 0)
+					return new HashSet<Skill>();
+
+				// Aggregate skills from all courses
+				return Courses.SelectMany(c => c.Skills).Distinct().ToList();
+			}
+			set
+			{
+				skills = value;
+			}
+		}
+
+		public ICollection<TrackPrerequisites>? TrackPrerequisites { get; set; } =
+			new HashSet<TrackPrerequisites>();
 
 		public ICollection<UserTracks>? UserTracks = new HashSet<UserTracks>();
 

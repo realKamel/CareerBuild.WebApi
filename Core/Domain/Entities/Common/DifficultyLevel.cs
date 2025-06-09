@@ -9,8 +9,8 @@ namespace Domain.Entities.Common
 	public enum DifficultyLevel : byte
 	{
 		None = 0,
-		Easy = 1,
-		Medium = 2,
-		Hard = 3,
+		Beginner = 1,
+		Intermediate = 2,
+		Advanced = 3,
 	}
 }

@@ -11,5 +11,5 @@ public class CreatedSkillDto
 	[MaxLength(1000, ErrorMessage = "Maximum length is {1000}")]
 	public string? Description { get; set; }
 
-	public SkillCategory Category { get; set; }
+	public SkillCategory? Category { get; set; }
 }

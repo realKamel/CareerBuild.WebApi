@@ -18,6 +18,9 @@ namespace Persistence.AppData.Configurations.JoinEntitiesConfigurations
 			builder.HasOne(b => b.Skill)
 				.WithMany(b => b.UserSkills)
 				.HasForeignKey(b => b.SkillId);
+
+			builder.HasIndex(u => new { u.UserEmail, u.SkillId })
+				.IsUnique();
 		}
 	}
 }

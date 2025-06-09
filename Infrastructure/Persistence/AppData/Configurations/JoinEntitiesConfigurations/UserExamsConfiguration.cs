@@ -15,7 +15,7 @@ namespace Persistence.AppData.Configurations.JoinEntitiesConfigurations
 		{
 			builder.HasKey(b => b.Id);
 
-			builder.HasIndex(b => b.UserEmail)
+			builder.HasIndex(u => new { u.UserEmail, u.ExamId })
 				.IsUnique(true);
 		}
 	}

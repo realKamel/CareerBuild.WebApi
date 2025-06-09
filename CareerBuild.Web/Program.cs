@@ -1,10 +1,6 @@
 using CareerBuild.Web.Extensions;
-using Domain.Entities.IdentityModule;
-using Domain.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using Persistence.DbContexts;
 using Serilog;
 using Services;
 
@@ -28,18 +24,28 @@ namespace CareerBuild.Web
 			builder.Host.UseSerilog(); // Use Serilog for logging
 			builder.Logging.ClearProviders();
 			builder.Logging.AddSerilog();
+			builder.Configuration
+				.AddJsonFile("appsettings.json", optional: false)
+				.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+				.AddEnvironmentVariables(); // Important!
 
-
-			builder.Services
-				.AddControllers(); // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-
-			builder.Services.AddSwaggerServices(); // web
+			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+			builder.Services.AddControllers();
+			builder.Services.AddSwaggerServices();
 
 			builder.Services.AddIdentityServices(builder.Configuration); //persistence layer
 
 			builder.Services.AddAppCoreService(); //service layer
 
 			builder.Services.AddJWTService(builder.Configuration);
+
+			builder.Services.AddAIWebHttpClient(builder.Configuration); // AI service client
+
+			builder.Services.AddStackExchangeRedisCache(options =>
+			{
+				options.Configuration = builder.Configuration.GetConnectionString("ValkeyConnection");
+				options.InstanceName = "Valkey_"; // Optional: Set a prefix for cache keys
+			});
 
 			builder.Services.AddCors(options =>
 			{
