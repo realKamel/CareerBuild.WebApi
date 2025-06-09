@@ -29,7 +29,7 @@ namespace Services.Specifications
 
 		public List<Expression<Func<TEntity, object>>> IncludeExp { get; } = [];
 		public List<string> IncludeStrings { get; } = [];
-		public List<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>> ThenIncludeExp { get; } = [];
+		public List<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>> ThenIncludeExp { get; } = new();
 
 
 		protected void AddInclude(Expression<Func<TEntity, object>> includeExp)
@@ -38,6 +38,11 @@ namespace Services.Specifications
 		protected void AddInclude(string includeString) // For ThenInclude using string paths
 		{
 			IncludeStrings.Add(includeString);
+		}
+
+		protected void AddThenInclude(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> thenIncludeExp)
+		{
+			ThenIncludeExp.Add(thenIncludeExp);
 		}
 
 		#endregion
