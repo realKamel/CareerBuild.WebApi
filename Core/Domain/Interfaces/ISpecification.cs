@@ -17,5 +17,6 @@ namespace Domain.Interfaces
 
 		public Expression<Func<TEntity, object>>? OrderBy { get; }
 		public Expression<Func<TEntity, object>>? OrderByDesc { get; }
+		public List<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>> ThenIncludeExp { get; }
 	}
 }
