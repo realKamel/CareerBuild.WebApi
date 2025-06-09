@@ -14,10 +14,11 @@ namespace Persistence.AppData.Configurations.JoinEntitiesConfigurations
 		public void Configure(EntityTypeBuilder<UserJobs> builder)
 		{
 			builder.HasKey(b => b.Id);
-
-			builder.HasOne(b=> b.Job)
-				.WithMany(b=> b.UserJobs)
-				.HasForeignKey(b=> b.JobId);
+			builder.HasIndex(u => new { u.UserEmail, u.JobId })
+				.IsUnique();
+			builder.HasOne(b => b.Job)
+				.WithMany(b => b.UserJobs)
+				.HasForeignKey(b => b.JobId);
 		}
 	}
 }

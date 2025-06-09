@@ -25,11 +25,8 @@ namespace Persistence.AppData.Configurations
 				.WithOne(b => b.Track)
 				.HasForeignKey(b => b.TrackId);
 
-			builder.HasMany(t => t.Phases)
-				.WithOne(t => t.Track)
-				.HasForeignKey(t => t.TrackId)
-				.OnDelete(DeleteBehavior.Cascade);
-
+			builder.Ignore(b => b.Skills); // Ignore Skills property as it is not mapped to the database
+			builder.Ignore(b => b.DurationInHours);
 		}
 	}
 }
