@@ -13,12 +13,16 @@ namespace Services.MappingProfiles
     {
         public AppMappingProfile()
         {
+			#region Track
             CreateMap<Track, TrackDto>();
             CreateMap<Phase, PhaseDto>();
             CreateMap<Exam, ExamDto>();
             CreateMap<Course, CourseDto>();
-            CreateMap<PhaseSkills, SkillDto>();
-            CreateMap<UserTracks, UserTracksDto>();
+
+			#endregion
+
+
+			#region Job
             CreateMap<Job, JobDto>().ReverseMap();
             CreateMap<Skill, SkillDto>().ReverseMap();
             CreateMap<CreatedJobDto, Job>();
