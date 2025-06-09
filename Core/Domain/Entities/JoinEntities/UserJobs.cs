@@ -13,6 +13,6 @@ namespace Domain.Entities.JoinEntities
 	{
 		public int JobId { get; set; }
 		public Job Job { get; set; } = default!;
-		public ApplicationStatus ApplicationStatusStatus { get; set; }
+		public ApplicationStatus ApplicationStatus { get; set; }
 	}
 }

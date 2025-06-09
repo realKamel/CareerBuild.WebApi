@@ -21,12 +21,9 @@ namespace Domain.Entities
 		public int DurationInMinutes { get; set; }
 		public int MaxAttempts { get; set; }
 		public string? ExamLink { get; set; }
+		public int ExamOrderNumber { get; set; } // Order of the exam in the track
 
-		#region Relations
-		#region MyRegion
-		public int PhaseId { get; set; }
-		public Phase Phase { get; set; } = default!;
-		#endregion
+		#region Relations	
 		#region Skills Relations
 		public ICollection<Skill> Skills { get; set; } = new HashSet<Skill>();
 		#endregion

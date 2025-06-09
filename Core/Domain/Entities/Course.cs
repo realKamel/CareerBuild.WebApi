@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Common;
+using Domain.Entities.JoinEntities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,11 +17,14 @@ namespace Domain.Entities
 
 		[MaxLength(1000, ErrorMessage = "Maximum length is {1000}")]
 		public string? Description { get; set; } = null!; // required
-		public decimal Price { get; set; }
+		public int CourseOrderInTrack { get; set; }
 		public string? CourseUrl { get; set; } // optional
+		public string? CoverUrl { get; set; } // optional
 		public int DurationInHours { get; set; }
 		public string? ProviderName { get; set; }
 		public DifficultyLevel DifficultyLevel { get; set; }
+
+
 
 		#region Relations
 		#region Skills
@@ -28,10 +32,13 @@ namespace Domain.Entities
 		#endregion
 
 		#region Phase Relation
-		public int? PhaseId { get; set; }
-		public Phase? Phase { get; set; } = default!;
+		public int TrackId { get; set; }
+		public Track Track { get; set; } = default!;
 		#endregion
 
+		#region UserCourses
+		public ICollection<UserCourses> UserCourses { get; set; } = new HashSet<UserCourses>();
+		#endregion
 		#endregion
 	}
 }

@@ -9,7 +9,7 @@ namespace Domain.Entities
 {
 	public class BaseEntity<TKey>
 	{
-		[Key] public TKey Id { get; set; }
+		public TKey Id { get; set; }
 		public string? CreatedBy { get; set; }
 		public DateTimeOffset CreatedAt { get; private set; } = DateTimeOffset.UtcNow;
 		public string? DeletedBy { get; set; }
