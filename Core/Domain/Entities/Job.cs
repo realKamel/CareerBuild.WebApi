@@ -15,7 +15,7 @@ namespace Domain.Entities
 		public required string Name { get; set; }
 		public required string Description { get; set; }
 		public Address Location { get; set; } = null!;
-		public DateTime? ExpiresAt { get; set; } // this is optional
+		public DateTimeOffset? ExpiresAt { get; set; } // this is optional
 		public EmploymentType EmploymentType { get; set; }
 
 		//Represent salary range
@@ -23,6 +23,8 @@ namespace Domain.Entities
 		public decimal MaxSalary { get; set; }
 
 		public required string CompanyEmail { get; set; }
+		public string? CompanyName { get; set; }
+		public string? CompanyLogoUrl { get; set; } // optional
 
 		#region Relations
 

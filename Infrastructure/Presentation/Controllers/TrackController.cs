@@ -25,7 +25,7 @@ namespace Presentation.Controllers
 		}
 
 		[HttpGet("{id}")]
-		public async Task<ActionResult<IEnumerable<TrackDto>>> GetTrackById(int id)
+		public async Task<ActionResult<IEnumerable<DetailedTrackDto>>> GetTrackById(int id)
 		{
 			var tracks = await _serviceManager.TrackServices.GetTrackById(id);
 			return Ok(tracks);

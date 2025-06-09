@@ -13,18 +13,26 @@ namespace Services.Specifications
 	{
 		public TrackSpecification(Expression<Func<Track, bool>>? CriteriaExp) : base(CriteriaExp)
 		{
-			AddInclude(x => x.Phases);
+			AddInclude(x => x.Courses);
 		}
 
 		public TrackSpecification(string? searchWord)
 			: base(p => string.IsNullOrWhiteSpace(searchWord)
 			|| p.Name.ToLower().Contains(searchWord.ToLower()))
 		{
-			AddInclude(x => x.Phases);
-			AddInclude("Phases.Courses");
-			AddInclude("Phases.PhaseSkills");
-			AddInclude("Phases.Courses.Skills");
-			AddInclude("Phases.Exam");
+			AddInclude(t => t.Courses); // Include Phases
+										// AddInclude(t => t.Phases.Select(p => p.Courses)); // Include Courses within Phases
+										// AddInclude(t => t.Phases.SelectMany(p => p.Courses.Select(c => c.Skills))); // Include Skills within Courses
+										// AddInclude("Phases.Courses");
+										// AddInclude("Phases.Courses.Skills");
+		}
+
+		public TrackSpecification(int id)
+			: base(p => p.Id == id)
+		{
+			AddInclude(t => t.Courses); // Include Phases
+										// AddInclude("Phases.Courses");
+										// AddInclude("Phases.Courses.Skills");
 		}
 	}
 }

@@ -9,10 +9,10 @@ namespace Domain.Entities.Common
 	public enum ApplicationStatus
 	{
 		// The order of these values is important for the application logic
-		Applied,
-		Interview,
-		Hired,
-		Rejected,
-		Withdrawn
+		Applied = 0,
+		Interview = 1,
+		Hired = 3,
+		Rejected = 4,
+		Withdrawn = 5
 	}
 }

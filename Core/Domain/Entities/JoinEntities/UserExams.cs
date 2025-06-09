@@ -11,11 +11,12 @@ namespace Domain.Entities.JoinEntities
 	public class UserExam : UserBaseEntity
 	{
 		public int AttemptCount { get; set; } = 1;
-		public DateTime? LastAttemptDate { get; set; } = null;
-		public DateTime? FinishedAt { get; set; } = null;
+		public DateTimeOffset? LastAttemptDate { get; set; } = null;
+		public DateTimeOffset? FinishedAt { get; set; } = null;
 		public decimal Score { get; set; }
 		public bool IsPassed { get; set; } = false;
 		#region Relations
+		public int ExamId { get; set; }
 		public Exam Exams { get; set; } = default!;
 		#endregion
 	}

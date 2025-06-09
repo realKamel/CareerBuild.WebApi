@@ -1,11 +1,11 @@
-﻿using Domain.Entities.Common;
-using Domain.Entities.JoinEntities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Entities.Common;
+using Domain.Entities.JoinEntities;
 
 namespace Domain.Entities
 {
@@ -22,8 +22,6 @@ namespace Domain.Entities
 		#region Relations
 
 		#region Course Relation
-
-		public int? CourseId { get; set; }
 		public ICollection<Course>? Courses { get; set; } = new HashSet<Course>();
 
 		#endregion
@@ -31,12 +29,6 @@ namespace Domain.Entities
 		#region JobRequiredSkills relations
 
 		public ICollection<Job>? Jobs { get; set; } = new HashSet<Job>();
-
-		#endregion
-
-		#region PhaseProvidedSkills relations
-
-		public ICollection<PhaseSkills>? PhaseSkills { get; set; } = new HashSet<PhaseSkills>();
 
 		#endregion
 

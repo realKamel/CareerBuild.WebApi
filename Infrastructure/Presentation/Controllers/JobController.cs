@@ -60,4 +60,31 @@ public class JobController(IServiceManager _serviceManager) : ControllerBase
 		var result = await _serviceManager.JobService.GetCompanyPostedJobs(searchWord, companyEmail);
 		return Ok(result);
 	}
+
+	[Authorize]
+	[HttpGet("AppliedJobs")] // GET api/Job/AppliedJobs
+	public async Task<ActionResult<IEnumerable<PostedJobApplication>>> GetUserJobs()
+	{
+		var userEmail = User.FindFirstValue(ClaimTypes.Email);
+		var result = await _serviceManager.JobService.GetUserAppliedJobs(userEmail);
+		return Ok(result);
+	}
+
+	[Authorize]
+	[HttpPut("apply/{jobId}")]
+	public async Task<ActionResult<bool>> ApplyForJob(int jobId)
+	{
+		var userEmail = User.FindFirstValue(ClaimTypes.Email);
+		var result = await _serviceManager.JobService.ApplyForJob(jobId, userEmail);
+		return Ok(result);
+	}
+
+	[Authorize]
+	[HttpDelete("unapply/{jobId}")] // POST api/Job/UnApply/{jobId}
+	public async Task<ActionResult<bool>> UnApplyForJob(int jobId)
+	{
+		var userEmail = User.FindFirstValue(ClaimTypes.Email);
+		var result = await _serviceManager.JobService.RemoveJobApplication(jobId, userEmail);
+		return Ok(result);
+	}
 }

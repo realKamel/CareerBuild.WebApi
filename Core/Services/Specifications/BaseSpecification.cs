@@ -29,7 +29,7 @@ namespace Services.Specifications
 
 		public List<Expression<Func<TEntity, object>>> IncludeExp { get; } = [];
 		public List<string> IncludeStrings { get; } = [];
-		public List<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>> ThenIncludeExp { get; } = [];
+		public List<Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>> ThenIncludeExp { get; } = new();
 
 
 		protected void AddInclude(Expression<Func<TEntity, object>> includeExp)
@@ -40,13 +40,18 @@ namespace Services.Specifications
 			IncludeStrings.Add(includeString);
 		}
 
+		protected void AddThenInclude(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> thenIncludeExp)
+		{
+			ThenIncludeExp.Add(thenIncludeExp);
+		}
+
 		#endregion
 
 		#region OrderBy
 
-		public Expression<Func<TEntity, object>> OrderBy { get; private set; }
+		public Expression<Func<TEntity, object>>? OrderBy { get; private set; }
 
-		public Expression<Func<TEntity, object>> OrderByDesc { get; private set; }
+		public Expression<Func<TEntity, object>>? OrderByDesc { get; private set; }
 
 		protected void AddOrderBy(Expression<Func<TEntity, object>> OrderByExpression) =>
 			OrderBy = OrderByExpression;
