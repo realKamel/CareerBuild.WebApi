@@ -24,7 +24,10 @@ namespace CareerBuild.Web
 			builder.Host.UseSerilog(); // Use Serilog for logging
 			builder.Logging.ClearProviders();
 			builder.Logging.AddSerilog();
-
+			builder.Configuration
+				.AddJsonFile("appsettings.json", optional: false)
+				.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+				.AddEnvironmentVariables(); // Important!
 
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddControllers();
