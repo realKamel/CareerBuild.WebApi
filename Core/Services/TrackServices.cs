@@ -109,8 +109,22 @@ namespace Services
 			var track = _mapper.Map<AiCreatedTrackDto, Track>(aiTrackResponse);
 
 			await _unitOfWork.GetRepository<Track, int>().AddAsync(track);
-			// await _unitOfWork.SaveChangesAsync();
+			await _unitOfWork.SaveChangesAsync();
 			return _mapper.Map<AiCreatedTrackDto, TEntity>(aiTrackResponse);
+		}
+
+		public async Task<bool> DeleteTrack(int trackId)
+		{
+			var track = await _unitOfWork.GetRepository<Track, int>().GetByIdAsync(trackId);
+
+			if (track == null)
+			{
+				throw new TrackNotFoundException(trackId);
+			}
+
+			_unitOfWork.GetRepository<Track, int>().Remove(track);
+
+			return await _unitOfWork.SaveChangesAsync() > 1;
 		}
 	}
 }

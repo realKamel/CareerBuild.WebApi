@@ -23,18 +23,30 @@ namespace Services.MappingProfiles
 			CreateMap<DifficultyLevel, DifficultyLevelDto>();
 
 			CreateMap<AiCreatedTrackDto, Track>()
-				.ForMember(dest => dest.CoverUrl, opt => opt.MapFrom(src => src.URL))
-				.ForMember(des => des.Description, opt => opt.MapFrom(src => string.Join(" ", src.Description))).ReverseMap();
+				.ForMember(dest => dest.CoverUrl, opt => opt.MapFrom(src => src.trackImgURL))
+				.ForMember(des => des.CreatedBy, opt => opt.MapFrom("Ai Model"))
+				.ForMember(des => des.Description, opt => opt.MapFrom(src => string.Join(" ", src.Details)))
+				.ForMember(dest => dest.ProviderName, opt => opt.MapFrom(src => src.providerName))
+				.ForMember(dest => dest.DifficultyLevel, opt => opt.MapFrom<CustomTrackDifficultyLevelResolver>())
+				// .ForMember(des => des.TrackPrerequisites.Select(t => new TrackPrerequisites().PrerequisiteName), opt => opt.MapFrom(src => src.prerequisite))
+				.ForMember(des => des.TrackPrerequisites, opt => opt.MapFrom(src => new List<TrackPrerequisites> { new TrackPrerequisites { PrerequisiteName = src.prerequisite, PrerequisiteDescription = "No Prerequisite" } }))
+				.ReverseMap();
 
 
 			CreateMap<AiCreatedTrackDto, TrackDto>()
-				.ForMember(dest => dest.CoverUrl, opt => opt.MapFrom(src => src.URL))
-				.ForMember(des => des.Description, opt => opt.MapFrom(src => string.Join(" ", src.Description))).ReverseMap();
+				.ForMember(dest => dest.CoverUrl, opt => opt.MapFrom(src => src.trackImgURL))
+				.ForMember(des => des.Description, opt => opt.MapFrom(src => string.Join(" ", src.Details)))
+				.ForMember(dest => dest.ProviderName, opt => opt.MapFrom(src => src.providerName))
+				.ForMember(dest => dest.DifficultyLevel, opt => opt.MapFrom<CustomTrackDtoDifficultyLevelResolver>())
+				//.ForMember(des => des.TrackPrerequisites, opt => opt.MapFrom(src => new TrackPrerequisites() { PrerequisiteName = src.prerequisite }))
+				.ReverseMap();
 
 			CreateMap<AiCreatedCourseDto, Course>()
-				.ForMember(dest => dest.DurationInHours, opt => opt.MapFrom(src => int.Parse(src.Duration)))
 				.ForMember(dest => dest.Skills, opt => opt.MapFrom(src => src.Skills.Select(e => new Skill { Name = e })))
-				.ForMember(dest => dest.CourseUrl, opt => opt.MapFrom(src => src.URL)).ReverseMap();
+				.ForMember(dest => dest.CourseUrl, opt => opt.MapFrom(src => src.URL))
+				.ForMember(des => des.CourseOrderInTrack, op => op.MapFrom(src => src.orderInTrack))
+				.ForMember(des => des.DifficultyLevel, opt => opt.MapFrom<CustomCourseDifficultyLevelResolver>())
+				.ReverseMap();
 
 			#endregion
 
