@@ -1,0 +1,40 @@
+name: Deploy .NET Application to MonsterASP
+
+on:
+    push:
+        branches:
+            - master # Or your main branch name (e.g., master, develop)
+    workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+    build-and-deploy:
+        runs-on: windows-latest # MonsterASP is Windows hosting, so use a Windows runner
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v4
+              with:
+                  dotnet-version: "8.0.x" # Or your specific .NET version (e.g., 6.0.x, 7.0.x)
+
+            - name: Restore dependencies
+              run: dotnet restore ${{ secrets.PROJECT_NAME }} # Use the secret for project name
+
+            - name: Build application
+              run: dotnet build ${{ secrets.PROJECT_NAME }} --no-restore --configuration ${{ secrets.BUILD_CONFIGURATION }}
+
+            - name: Publish application
+              run: dotnet publish ${{ secrets.PROJECT_NAME }} --no-build --configuration ${{ secrets.BUILD_CONFIGURATION }} --output publish_output
+
+            - name: Deploy to MonsterASP via WebDeploy
+              uses: cschleiden/webdeploy-action@v1
+              with:
+                  website-name: ${{ secrets.WEBSITE_NAME }} # Crucial for cschleiden/webdeploy-action
+                  server-url: ${{ secrets.WEBSITE_PUBLISH_URL }}
+                  username: ${{ secrets.WEBSITE_USERNAME }}
+                  password: ${{ secrets.WEBSITE_PASSWORD }}
+                  package-path: publish_output # This is the folder containing your published application
+                  clean-target-folder: true # Optional: Clean the target folder before deployment
+                  enable-app-offline: true # Highly recommended: Puts app_offline.htm during deployment to prevent errors

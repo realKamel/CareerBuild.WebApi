@@ -101,7 +101,7 @@ namespace Persistence.AppData.Migrations
 
                     b.HasIndex("TrackId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Exam", b =>
@@ -167,7 +167,7 @@ namespace Persistence.AppData.Migrations
 
                     b.HasIndex("TrackId");
 
-                    b.ToTable("Exams");
+                    b.ToTable("Exams", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Job", b =>
@@ -232,7 +232,7 @@ namespace Persistence.AppData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Jobs", t =>
+                    b.ToTable("Jobs", null, t =>
                         {
                             t.HasCheckConstraint("ensure_salary_Range_check", "[MaxSalary] >= [MinSalary]");
                         });
@@ -288,7 +288,7 @@ namespace Persistence.AppData.Migrations
                     b.HasIndex("UserEmail", "CourseId")
                         .IsUnique();
 
-                    b.ToTable("UserCourses");
+                    b.ToTable("UserCourses", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.JoinEntities.UserExam", b =>
@@ -347,7 +347,7 @@ namespace Persistence.AppData.Migrations
                     b.HasIndex("UserEmail", "ExamId")
                         .IsUnique();
 
-                    b.ToTable("UserExams");
+                    b.ToTable("UserExams", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.JoinEntities.UserJobs", b =>
@@ -394,7 +394,7 @@ namespace Persistence.AppData.Migrations
                     b.HasIndex("UserEmail", "JobId")
                         .IsUnique();
 
-                    b.ToTable("UserJobs");
+                    b.ToTable("UserJobs", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.JoinEntities.UserSkills", b =>
@@ -441,7 +441,7 @@ namespace Persistence.AppData.Migrations
                     b.HasIndex("UserEmail", "SkillId")
                         .IsUnique();
 
-                    b.ToTable("UserSkills");
+                    b.ToTable("UserSkills", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.JoinEntities.UserTracks", b =>
@@ -494,7 +494,7 @@ namespace Persistence.AppData.Migrations
                     b.HasIndex("UserEmail", "TrackId")
                         .IsUnique();
 
-                    b.ToTable("UserTracks");
+                    b.ToTable("UserTracks", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Skill", b =>
@@ -545,7 +545,7 @@ namespace Persistence.AppData.Migrations
 
                     b.HasIndex("ExamId");
 
-                    b.ToTable("Skills");
+                    b.ToTable("Skills", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Track", b =>
@@ -598,7 +598,7 @@ namespace Persistence.AppData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tracks");
+                    b.ToTable("Tracks", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.TrackPrerequisites", b =>
@@ -618,7 +618,7 @@ namespace Persistence.AppData.Migrations
 
                     b.HasKey("TrackId");
 
-                    b.ToTable("TrackPrerequisites");
+                    b.ToTable("TrackPrerequisites", (string)null);
                 });
 
             modelBuilder.Entity("JobSkill", b =>
@@ -633,7 +633,7 @@ namespace Persistence.AppData.Migrations
 
                     b.HasIndex("SkillsId");
 
-                    b.ToTable("JobSkill");
+                    b.ToTable("JobSkill", (string)null);
                 });
 
             modelBuilder.Entity("CourseSkill", b =>
@@ -671,7 +671,7 @@ namespace Persistence.AppData.Migrations
 
             modelBuilder.Entity("Domain.Entities.Job", b =>
                 {
-                    b.OwnsOne("Domain.Entities.Common.Address", "Location", b1 =>
+                    b.OwnsOne("Domain.Entities.Job.Location#Domain.Entities.Common.Address", "Location", b1 =>
                         {
                             b1.Property<int>("JobId")
                                 .HasColumnType("int");
@@ -690,7 +690,7 @@ namespace Persistence.AppData.Migrations
 
                             b1.HasKey("JobId");
 
-                            b1.ToTable("Jobs");
+                            b1.ToTable("Jobs", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("JobId");
