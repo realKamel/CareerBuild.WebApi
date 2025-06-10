@@ -33,12 +33,20 @@ namespace Presentation.Controllers
 
 		[Authorize]
 		[HttpGet("enrolled")]
-		public async Task<ActionResult<IEnumerable<UserTracksDto>>>
-			GetUserEnrolledTracks()
+		public async Task<ActionResult<IEnumerable<UserTracksDto>>> GetUserEnrolledTracks()
 		{
 			var userEmail = User.FindFirstValue(ClaimTypes.Email);
 			var tracks = await _serviceManager.TrackServices.GetUserEnrolledTracks(userEmail);
 			return Ok(tracks);
+		}
+
+		[Authorize]
+		[HttpDelete("{id}")]
+		public async Task<ActionResult<bool>> DeleteTrack(int id)
+		{
+			var result = await _serviceManager.TrackServices.DeleteTrack(id);
+
+			return Ok(result);
 		}
 	}
 }

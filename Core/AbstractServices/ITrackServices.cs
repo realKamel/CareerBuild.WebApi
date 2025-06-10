@@ -8,4 +8,5 @@ public interface ITrackServices
 	public Task<DetailedTrackDto> GetTrackById(int trackId);
 	public Task<IEnumerable<TrackDto>> GetAllTracks(string? searchWord);
 	public Task<IEnumerable<UserTracksDto>> GetUserEnrolledTracks(string? userEmail);
+	public Task<bool> DeleteTrack(int trackId);
 }
