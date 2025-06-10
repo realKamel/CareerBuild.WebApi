@@ -29,8 +29,9 @@ jobs:
               run: dotnet publish ${{ secrets.PROJECT_NAME }} --no-build --configuration ${{ secrets.BUILD_CONFIGURATION }} --output publish_output
 
             - name: Deploy to MonsterASP via WebDeploy
-              uses: ms-k8s-providers/webdeploy-action@v1 # A common action for WebDeploy
+              uses: cschleiden/webdeploy-action@v1
               with:
+                  website-name: ${{ secrets.WEBSITE_NAME }} # Crucial for cschleiden/webdeploy-action
                   server-url: ${{ secrets.WEBSITE_PUBLISH_URL }}
                   username: ${{ secrets.WEBSITE_USERNAME }}
                   password: ${{ secrets.WEBSITE_PASSWORD }}
