@@ -3,7 +3,7 @@ name: Deploy .NET Application to MonsterASP
 on:
     push:
         branches:
-            - main # Or your main branch name (e.g., master, develop)
+            - master # Or your main branch name (e.g., master, develop)
     workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
