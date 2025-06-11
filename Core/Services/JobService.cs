@@ -25,36 +25,58 @@ public class JobService(IUnitOfWork _unitOfWork, IMapper _mapper, UserManager<Ap
 		{
 			throw new JobNotFoundException("No Jobs are Found");
 		}
+
 		return _mapper.Map<IEnumerable<Job>, IEnumerable<JobDto>>(result);
 	}
 
 	public async Task<JobDto> GetJobById(int id)
 	{
-		var result = await _unitOfWork.GetRepository<Job, int>()
+		var job = await _unitOfWork.GetRepository<Job, int>()
 						.GetByIdAsync(new JobSpecification(id, null));
 
-		if (result == null)
+		if (job == null)
 		{
 			throw new JobNotFoundException($"Job is not Found");
 		}
 
-		return _mapper.Map<Job, JobDto>(result);
+
+		var company = await _userManager.FindByEmailAsync(job.CompanyEmail) as CompanyUser;
+
+		if (company is null)
+		{
+			Log.Warning($"Company user with email {job.CompanyEmail} not found.");
+			throw new UserNotFoundException("Company user not found. Please check your login credentials.");
+		}
+		// job.WebsiteUrl = company.WebsiteUrl;
+
+		return _mapper.Map<Job, JobDto>(job);
 	}
 
 	public async Task<JobDto> CreatedJob(CreatedJobDto createdJobDto, string? companyEmail)
 	{
-		var mappedJob = _mapper.Map<CreatedJobDto, Job>(createdJobDto);
+		var job = _mapper.Map<CreatedJobDto, Job>(createdJobDto);
 
-		if (mappedJob is null || companyEmail is null)
+
+		companyEmail = "Orange@gmail.com";
+
+		if (job is null || companyEmail is null)
 		{
 			throw new Exception("Error in Creating Post. Please Try Again Later");
 		}
 
-		mappedJob.CompanyEmail = companyEmail;
+		var company = await _userManager.FindByEmailAsync(companyEmail) as CompanyUser;
 
+		if (company is null)
+		{
+			throw new UnauthorizedAccessException("User is Not Logged In");
+		}
+
+		job.CompanyEmail = company?.Email;
+		job.CompanyName = company.CompanyName;
+		job.CompanyLogoUrl = company.PictureUrl;
 		try
 		{
-			await _unitOfWork.GetRepository<Job, int>().AddAsync(mappedJob);
+			await _unitOfWork.GetRepository<Job, int>().AddAsync(job);
 			await _unitOfWork.SaveChangesAsync();
 		}
 		catch (Exception e)
@@ -63,7 +85,7 @@ public class JobService(IUnitOfWork _unitOfWork, IMapper _mapper, UserManager<Ap
 			throw new("An error occurred while creating the job.", e);
 		}
 
-		var result = await _unitOfWork.GetRepository<Job, int>().GetByIdAsync(mappedJob.Id);
+		var result = await _unitOfWork.GetRepository<Job, int>().GetByIdAsync(job.Id);
 
 		if (result is null)
 		{
@@ -112,13 +134,13 @@ public class JobService(IUnitOfWork _unitOfWork, IMapper _mapper, UserManager<Ap
 
 	public async Task<bool> DeletePost(int id)
 	{
-		var job = await _unitOfWork.GetRepository<Job, int>().GetByIdAsync(id);
+		var repo = _unitOfWork.GetRepository<Job, int>();
+		var job = await repo.GetByIdAsync(id);
 		if (job is not null)
 		{
-			_unitOfWork.GetRepository<Job, int>().Remove(job);
-			return true;
+			repo.Remove(job);
 		}
-		return false;
+		return await _unitOfWork.SaveChangesAsync() > 0;
 	}
 
 	public async Task<IEnumerable<JobDto>> GetCompanyPostedJobs(string? searchWord, string? email)
