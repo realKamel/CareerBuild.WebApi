@@ -77,7 +77,7 @@ jobs:
         username: ${{ secrets.MONSTERASP_FTP_USERNAME }}
         password: ${{ secrets.MONSTERASP_FTP_PASSWORD }}
         local-dir: ./publish/
-        server-dir: /
+        server-dir: /wwwroot/
         exclude: |
           **/.git*
           **/.git*/**
