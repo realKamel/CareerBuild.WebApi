@@ -52,9 +52,10 @@ namespace CareerBuild.Web
 				options.AddPolicy("AllowAngularApp",
 					policy =>
 					{
-						policy.WithOrigins("http://localhost:4200")
+						policy.WithOrigins("http://localhost:4200", "https://careerbuild.netlify.app")
 							  .AllowAnyHeader()
-							  .AllowAnyMethod();
+							  .AllowAnyMethod()
+							  .AllowCredentials();
 					});
 			});
 
