@@ -1,40 +1,91 @@
-name: Deploy .NET Application to MonsterASP
+﻿name: Deploy to MonsterASP
 
 on:
-    push:
-        branches:
-            - master # Or your main branch name (e.g., master, develop)
-    workflow_dispatch: # Allows manual triggering of the workflow
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  PROJECT_PATH: ${{ secrets.PROJECT_NAME }}
+  PUBLISH_PROFILE: 'Release'
 
 jobs:
-    build-and-deploy:
-        runs-on: windows-latest # MonsterASP is Windows hosting, so use a Windows runner
+  build:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+    
+    - name: Restore dependencies
+      run: dotnet restore ${{ env.PROJECT_PATH }}
+    
+    - name: Build project
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration ${{ env.PUBLISH_PROFILE }}
+    
+    - name: Run tests
+      run: dotnet test ${{ env.PROJECT_PATH }} --no-build --configuration ${{ env.PUBLISH_PROFILE }} --verbosity normal
+      continue-on-error: true
+    
+    - name: Publish application
+      run: dotnet publish ${{ env.PROJECT_PATH }} --no-build --configuration ${{ env.PUBLISH_PROFILE }} --output ./publish --runtime win-x86 --self-contained false
+    
+    - name: Create build info
+      run: |
+        $buildInfo = @{
+          "BuildDate" = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+          "CommitHash" = "${{ github.sha }}"
+          "Branch" = "${{ github.ref_name }}"
+        } | ConvertTo-Json
+        $buildInfo | Out-File -FilePath ./publish/build-info.json -Encoding UTF8
+      shell: pwsh
+    
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dotnet-app
+        path: ./publish
+        retention-days: 5
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-
-            - name: Setup .NET
-              uses: actions/setup-dotnet@v4
-              with:
-                  dotnet-version: "8.0.x" # Or your specific .NET version (e.g., 6.0.x, 7.0.x)
-
-            - name: Restore dependencies
-              run: dotnet restore ${{ secrets.PROJECT_NAME }} # Use the secret for project name
-
-            - name: Build application
-              run: dotnet build ${{ secrets.PROJECT_NAME }} --no-restore --configuration ${{ secrets.BUILD_CONFIGURATION }}
-
-            - name: Publish application
-              run: dotnet publish ${{ secrets.PROJECT_NAME }} --no-build --configuration ${{ secrets.BUILD_CONFIGURATION }} --output publish_output
-
-            - name: Deploy to MonsterASP via WebDeploy
-              uses: cschleiden/webdeploy-action@v1
-              with:
-                  website-name: ${{ secrets.WEBSITE_NAME }} # Crucial for cschleiden/webdeploy-action
-                  server-url: ${{ secrets.WEBSITE_PUBLISH_URL }}
-                  username: ${{ secrets.WEBSITE_USERNAME }}
-                  password: ${{ secrets.WEBSITE_PASSWORD }}
-                  package-path: publish_output # This is the folder containing your published application
-                  clean-target-folder: true # Optional: Clean the target folder before deployment
-                  enable-app-offline: true # Highly recommended: Puts app_offline.htm during deployment to prevent errors
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: production
+    
+    steps:
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: dotnet-app
+        path: ./publish
+    
+    - name: Display deployment files
+      run: |
+        echo "Files to deploy:"
+        ls -la ./publish
+        
+    - name: Deploy to MonsterASP via FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: ${{ secrets.MONSTERASP_FTP_SERVER }}
+        username: ${{ secrets.MONSTERASP_FTP_USERNAME }}
+        password: ${{ secrets.MONSTERASP_FTP_PASSWORD }}
+        local-dir: ./publish/
+        server-dir: /
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          **/*.pdb
+        dangerous-clean-slate: false
+        
+    - name: Deployment Complete
+      run: |
+        echo "Successfully deployed to MonsterASP!"
+        echo "Build Info: $(cat ./publish/build-info.json)"
