@@ -24,7 +24,6 @@ namespace Services.MappingProfiles
 
 			CreateMap<AiCreatedTrackDto, Track>()
 				.ForMember(dest => dest.CoverUrl, opt => opt.MapFrom(src => src.trackImgURL))
-				.ForMember(des => des.CreatedBy, opt => opt.MapFrom("Ai Model"))
 				.ForMember(des => des.Description, opt => opt.MapFrom(src => string.Join(" ", src.Details)))
 				.ForMember(dest => dest.ProviderName, opt => opt.MapFrom(src => src.providerName))
 				.ForMember(dest => dest.DifficultyLevel, opt => opt.MapFrom<CustomTrackDifficultyLevelResolver>())
