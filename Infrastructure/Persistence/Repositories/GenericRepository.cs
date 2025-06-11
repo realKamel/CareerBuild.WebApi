@@ -20,7 +20,7 @@ namespace Persistence.Repositories
 
 		public async Task<IEnumerable<TEntity>> GetAllAsync()
 		{
-			return await _dbContext.Set<TEntity>().Where(e => !e.IsDeleted).ToListAsync();
+			return await _dbContext.Set<TEntity>().ToListAsync();
 		}
 
 
@@ -33,8 +33,7 @@ namespace Persistence.Repositories
 
 		public void Remove(TEntity entity)
 		{
-			entity.IsDeleted = true;
-			_dbContext.Set<TEntity>().Update(entity);
+			_dbContext.Set<TEntity>().Remove(entity);
 		}
 
 		public void Update(TEntity entity)
