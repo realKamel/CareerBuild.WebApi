@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /.vscode
 CareerBuild.Web/appsettings.Development.json
+/publish_out
+/publish
