@@ -56,9 +56,6 @@ public class JobService(IUnitOfWork _unitOfWork, IMapper _mapper, UserManager<Ap
 	{
 		var job = _mapper.Map<CreatedJobDto, Job>(createdJobDto);
 
-
-		companyEmail = "Orange@gmail.com";
-
 		if (job is null || companyEmail is null)
 		{
 			throw new Exception("Error in Creating Post. Please Try Again Later");
@@ -74,6 +71,7 @@ public class JobService(IUnitOfWork _unitOfWork, IMapper _mapper, UserManager<Ap
 		job.CompanyEmail = company?.Email;
 		job.CompanyName = company.CompanyName;
 		job.CompanyLogoUrl = company.PictureUrl;
+
 		try
 		{
 			await _unitOfWork.GetRepository<Job, int>().AddAsync(job);
@@ -186,6 +184,8 @@ public class JobService(IUnitOfWork _unitOfWork, IMapper _mapper, UserManager<Ap
 
 	public async Task<IEnumerable<PostedJobApplication>> GetUserAppliedJobs(string? userEmail)
 	{
+
+		//TODO: Return company name
 		if (string.IsNullOrEmpty(userEmail))
 		{
 			Log.Warning("Company email is null or empty.");
