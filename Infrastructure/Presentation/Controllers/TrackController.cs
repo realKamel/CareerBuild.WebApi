@@ -17,13 +17,19 @@ namespace Presentation.Controllers
 	[Route("api/[controller]")]
 	public class TracksController(IServiceManager _serviceManager) : ControllerBase
 	{
-		[HttpGet()]
-		public async Task<ActionResult<IEnumerable<TrackDto>>> GetAllTracks(string? searchWord)
+		[HttpGet]
+		public async Task<ActionResult<IEnumerable<TrackDto>>> GetAllTracks()
 		{
-			var tracks = await _serviceManager.TrackServices.GetAllTracks(searchWord);
+			var tracks = await _serviceManager.TrackServices.GetAllTracks();
 			return Ok(tracks);
 		}
 
+		[HttpGet("AiSearch/{searchWord}")]
+		public async Task<ActionResult<IEnumerable<TrackDto>>> GetAllTracks(string searchWord)
+		{
+			var tracks = await _serviceManager.TrackServices.SearchTrackByAi(searchWord);
+			return Ok(tracks);
+		}
 		[HttpGet("{id}")]
 		public async Task<ActionResult<IEnumerable<DetailedTrackDto>>> GetTrackById(int id)
 		{
